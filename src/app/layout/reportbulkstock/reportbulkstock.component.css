@@ -1,0 +1,16 @@
+option[value=""][disabled] {
+    display: none;
+    }
+    
+button:disabled{
+    cursor:not-allowed;
+}
+
+.app .bs-datepicker-body table td:not(.week) {
+    pointer-events: none;
+  }
+  
+  ._ngcontent-rqj-c11{
+      padding-left:50px;
+
+  }

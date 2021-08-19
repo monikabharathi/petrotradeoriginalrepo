@@ -1,0 +1,296 @@
+<ng-template #DeleteAlert>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Alert!!!</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h4>Selected Date Forecast Already Configured For this Product </h4>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="modalRef.hide()">ok</button>
+  </div>
+</ng-template>
+
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4 class="m-b-0 text-white">Add Weekly Forecast</h4>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <h6><strong> Forecast Date</strong><span class="text-danger">*</span></h6>
+            <div class="controls">
+              <input type="text" placeholder="Select the Date" class="form-control" name="forecastdate"
+                (ngModelChange)="forcastweeklist($event)" [(ngModel)]="forecast.forecastdate"
+                (ngModelChange)="Dayvalidation($event)" (ngModelChange)="getdepotlist($event)"
+                #forecastdate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && forecastdate.invalid }" required
+                bsDatepicker [bsConfig]="{ dateInputFormat:'DD-MM-YYYY' }" readonly="true">
+              <div *ngIf="f.submitted && forecastdate.invalid" class="invalid-feedback">
+                <div *ngIf="forecastdate.errors.required">Forecast Date Is Required
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <h6><strong>Depot Name </strong> <span class="text-danger">*</span></h6>
+            <div class="controls">
+              <select id="depotname" placeholder="Select depotname" name="depotname"
+                [(ngModel)]="forecast.depotname" #depotname="ngModel"
+                (change)="getproductlistfordepot($event.target.value)"
+                (change)="getperviousversionlist($event.target.value)"
+                [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }" required class="form-control">
+                <option value="undefined" selected disabled>Select Depot Name</option>
+                <option value="{{c.DEPOT_ID}}" *ngFor="let c of depotlist">
+                  {{c.DEPOT_NAME}}</option>
+              </select>
+              <div *ngIf="f.submitted && depotname.invalid" class="invalid-feedback">
+                <div *ngIf="depotname.errors.required">Depot Name Is Required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <h6><strong>Previous Forecast Version</strong> <span class="text-danger">*</span></h6>
+            <div class="controls">
+              <select id="forecastversion" placeholder="Select forecastversion" name="forecastversion" (change)="getprviusversionsdata(forecast.forecastversion,forecast.depotname)"
+                [(ngModel)]="forecast.forecastversion" #forecastversion="ngModel" class="form-control">
+                <option value="undefined" selected disabled>Select Previous version </option>
+                <option value="{{v.FORECAST_VERSION}}" *ngFor="let v of perviousversionlist"> {{v.FORECAST_VERSION}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+       
+
+        <div class="col-lg-6">
+          <div class="form-group">
+            <h6><strong>Forecasting Days</strong><span class="text-danger">*</span></h6>
+            <div class="controls">
+              <input type="text" placeholder="Forecasting Days" readonly='true' class="form-control"
+                name="daynumber" [(ngModel)]="forecast.daynumber" />
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="card" [hidden]="viewdataofpreviuos">
+  <div class="card-body">
+    <h4 class="card-title"><strong>View pervious Forecast Data</strong> </h4>
+    <div class="row">
+      <div class="col bg-info border p-1 text-center">
+        <h6 class=" text-white"><strong>Forecast Version</strong></h6>
+      </div>
+
+      <div class="col bg-info border p-1 text-center">
+        <h6 class=" text-white"><strong>weekstartDate</strong></h6>
+      </div>
+      <div class="col bg-info border p-1 text-center ">
+        <h6 class=" text-white"><strong>weekEndDate</strong></h6>
+      </div>
+      <div class="col bg-info border p-1 text-center">
+        <h6 class=" text-white"><strong>WeekNum</strong></h6>
+      </div>
+      <div *ngFor="let p of selectedProductList[0]" class="col bg-info border p-1 text-center ">
+        <h6 class=" text-white"> <span><pre>{{p.PRODUCT_NAME}}</pre></span></h6>
+        </div>
+    </div>
+
+    <div class="row" *ngFor="let p of previoudversiondata;let i = index">
+      <div class="col  bg-light border p-1 text-center" name='version'> <span><pre>{{p.FORECAST_VERSION}}</pre></span></div>
+       <div class="col  bg-light border p-1 text-center" name='weekstart'><span><pre>{{p.WEEK_START | date :  "dd-MM-yyyy"}}</pre></span></div>
+      <div class="col  bg-light border p-1 text-center" name='weekend'><span><pre>{{p.WEEK_END | date :  "dd-MM-yyyy"}}</pre></span></div>
+      <div class="col  bg-light border p-1 text-center" name='weeknum'> <span><pre>{{p.WEEK_NUM}}</pre></span></div>
+      <div *ngFor="let l of selectedProductList[i]" class="col  bg-light border p-1 text-center"
+        name='{{p.WEEK_NUM+l.PRODUCT_NAME}}'><span><pre>{{Number(l.FORECAST_QUANTITY)|currency:"LAK":''}}</pre></span></div>
+     </div>
+  </div>
+ 
+</div>
+
+
+
+
+
+
+
+
+<h4 [hidden]="mybuttonsubmit">Select The Product</h4>
+    <!--  <button class="btn btn-primary" (click)="enableProduct(p.productid)" >    (change)="enableProduct(p.productid)" -->
+
+<!-- <table>
+<thead><th>
+  <div class="btn-group" *ngFor="let p of productlist;"   >
+       
+       <input type="checkbox" class="sub-menu"   [checked]="p.checkboxstatus"   [disabled]="p.flag"  
+       (change)="getcurrentversionlist(p,forecast.depotname,p.productid,DeleteAlert)"
+       
+      [(ngModel)]="p.checkboxstatus"
+         name='checkboxstatus{{i}}' >
+                                           
+       <strong>{{p.productname}}</strong>
+    &nbsp; &nbsp;
+   
+   </div>
+
+</th></thead>
+
+<tbody>
+  <td>
+  <div class="btn-group" *ngFor="let p of productlist;"   >
+    <button class="btn btn-primary"  [disabled]="p.productsel" (click)="enableProduct(p.productid)" > 
+      <strong>{{p.productname}}</strong>
+   </button>
+   &nbsp; &nbsp;
+  
+  </div> 
+
+  </td>
+  
+</tbody>
+</table>
+
+ -->
+
+
+
+<!--  <br>-->
+
+
+
+
+<div  class="btn-group" *ngFor="let p of productlist;"  [hidden]="mybuttonsubmit">
+  <input type="checkbox" class="sub-menu"   [checked]="p.checkboxstatus"   [disabled]="p.flag"  
+  (change)="getcurrentversionlist(p,forecast.depotname,p.productid,DeleteAlert)"
+  
+ [(ngModel)]="p.checkboxstatus"
+    name='checkboxstatus{{i}}' >
+    &nbsp; &nbsp;
+   
+<div   *ngFor="let q of productlist;" >
+  <div *ngIf="p.productid===q.productid">
+
+    <button class="btn btn-primary"  [disabled]="p.productsel" (click)="enableProduct(p.productid)" > 
+      <strong>{{p.productname}}</strong>
+   </button>
+   &nbsp; &nbsp;
+
+  </div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+<form name="form" (ngSubmit)="f.form.valid && validateForeCastWeek(form)" #f="ngForm" autocomplete="off">
+
+      <div class="table-responsive">
+    
+        <table class="table table-striped">
+          <thead>
+
+
+            <tr class="bg-info m-b-0 text-white">
+              <th> <h6 class=" text-white"><strong>Forecast Version</strong></h6></th>
+              <th> <h6 class=" text-white"><strong>Forecast Date</strong></h6></th>
+              <th> <h6 class=" text-white"><strong>Week Start Date</strong></h6></th>
+              <th>  <h6 class=" text-white"><strong>Week End Date</strong></h6></th>
+              <th> <h6 class=" text-white"><strong>Week Number</strong></h6></th>
+              <th  *ngFor="let p of productlist ;let i = index"> <h6  *ngIf="myiputvalue ==p.productid" class=" text-white"><strong>{{p.productname}}</strong></h6></th>
+              <th  *ngFor="let p of productlist ;let i = index"> <h6  *ngIf="myiputvalue ==p.productid" class=" text-white"><strong>Total {{p.productname}}</strong></h6></th> </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let fw of forcastweekdatelist; let i = index ">
+
+                <td > <input type="hidden" class="form-control"  [(ngModel)]="forecast.version" [ngModelOptions]="{standalone: true}"      readonly='true'>  <span><pre><strong>{{forecast.version}}</strong></pre></span> </td>
+                <td><input type="hidden" class="form-control" readonly='true'  size='50' [name]="fw.forcastdar" [(ngModel)]="fw.forcastdar" ><span><pre>{{fw.forcastdar | date :  "dd-MM-yyyy"}}</pre></span></td>
+                <td><input type="hidden" class="form-control" readonly='true' size='50' [name]="fw.startdate" [(ngModel)]="fw.startdate"><span><pre>{{fw.startdate | date :  "dd-MM-yyyy"}}</pre></span></td>  
+                 <td> <input type="hidden" class="form-control" readonly='true' size='50' [name]="fw.enddate" [(ngModel)]="fw.enddate"><span><pre>{{fw.enddate | date :  "dd-MM-yyyy"}}</pre></span></td>
+                 <td><input type="hidden" class="form-control" readonly='true' size='50' [name]="fw.weeknum" [(ngModel)]=" fw.weeknum"><span><pre>{{fw.weeknum}}</pre></span></td>
+              <td  *ngFor="let p of fw.prodList;let j = index"> 
+                
+                <input *ngIf="myiputvalue ==p.pid" type="text"  class="form-control" size='50' 
+                      onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                      name="pid{{[i,j]}}" [(ngModel)]="p.pvalue"
+                      (change)="showtotal(p.pvalue,fw.weeknum,p.pid,forecast.version,i,j)" #pid="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && pid.invalid }" required>
+              </td>
+
+
+              <td  *ngFor="let p of fw.prodList;let k = index"  >
+
+                <input   *ngIf="myiputvalue ==p.pid" type="hidden" class="form-control" size='50' readonly='true'  [name]="p.pid1"
+                [(ngModel)]="p.pvalue1" [ngModelOptions]="{standalone: true}">
+                <span *ngIf="myiputvalue ==p.pid" ><pre>{{p.pvalue1}}</pre></span>
+
+
+              </td>
+              </tr>
+
+              </tbody>
+
+            </table>
+
+            
+<div class="button-box text-center">
+  <button class="btn btn-danger" [routerLink]="'../forecastweek'" [hidden]="mysubmit">Cancel</button>
+  <button class="btn btn-info" type="submit" [hidden]="mysubmit" [disabled]="!f.form.valid">Submit</button>
+  <span  style="color: red;">{{msg}}</span>
+
+</div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+</form>
+
+
+
+

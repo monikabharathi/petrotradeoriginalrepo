@@ -1,0 +1,5 @@
+.center {
+    display: flex;
+    height: 20px;
+    justify-content: center;
+  }

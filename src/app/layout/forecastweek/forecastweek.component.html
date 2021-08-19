@@ -1,0 +1,110 @@
+
+<ng-template #DeleteAlert>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Alert!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h4>This Forecast week Linked With Multiple Products</h4> 
+    </div>
+    <div class="modal-body">
+        <h4>Are you sure want to delete this forecast data.</h4> 
+    </div>
+    <div class="modal-footer">
+     <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Cancel</button>
+     <button type="button" class="btn btn-success" (click)="Deleteforecastweek(deleteforecastdepot)">Delete</button>
+    </div>
+</ng-template> 
+<div class="loading" *ngIf="loading">
+    <div class="card">
+        <div class="card-body">
+            <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+                <p style="font-size: 20px; color: white">Loading...</p>
+            </ngx-spinner>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!loading">
+    <div class="col-lg-12">
+        <div style="display:flex; justify-content:flex-end; width:100%; padding-bottom: 15px;">
+
+
+            &nbsp; &nbsp; &nbsp;
+            <a [hidden]="addvisiable" [routerLink]="'../addforecastweek'"> <button type="submit" class="btn btn-info">Add Forecast </button>
+            </a>
+
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <!-- search the records -->
+                <div class="col-lg-3" class="float-right">
+                    <div class="input-group ">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon2"><i class="ti-search"></i></div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="search" autocomplete="off" name="search"
+                            [(ngModel)]="filter">
+                    </div>
+                </div>
+
+                <!-- search the records  end -->
+                <div class="table-responsive">
+                    <!--   <table class="table color-table info-table"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="bg-info m-b-0 text-white">
+                                <th>Sl No</th>
+                                <th>Depot Name</th>
+                                <th>Depot ID</th>
+                                <th>Forecast Date</th>
+                           <!-- <th>Week Number</th> -->
+                                 <th>Actions</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let c of collection.data | paginate:config | filter: filter; let i = index ">
+                                <td><strong> {{ (config.currentPage - 1) * config.itemsPerPage + i +1 }}</strong></td>
+                                <td> <strong>{{c.DEPOTNAME}}</strong></td>
+                                <td><strong>{{c.DEPOT_ID}}</strong></td>
+                                <td><strong>{{c.FORECAST_DATE | date :  "dd-MM-yyyy"}}</strong></td>
+                        <!--         <td><strong>{{c.WEEK_NUM}}</strong></td> -->
+                          <a href="javascript:void(0)">
+                                    <td> <i class="mdi mdi-eye-outline" tooltip="View ForeCast"
+                                        [hidden]="viewvisiable"   (click)="ViewForecast(c)"></i></td>
+                                </a>
+                                <a href="javascript:void(0)">
+                                    <td> <i class="mdi mdi-border-color" tooltip="Edit ForeCast"
+                                        [hidden]="editvisiable" (click)="EditForecast(c)"></i></td>
+                                </a>  
+                                <a href="javascript:void(0)">
+                                    <td> <i class="fa fa-trash" aria-hidden="true" tooltip="Delete ForeCast" (click)="DeleteForecast(DeleteAlert,c)"></i></td>
+                                </a> 
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="center">
+                        <tr *ngIf="collection.data.length===0">
+                            <td><strong>No Records found</strong></td>
+                        </tr>
+                    </div>
+                    <div class="row">
+                        <!--   <div class="col-lg-3 col-md-12">
+                                    <input type="number" class="form-control" name="itemsPerPage"
+                                        [(ngModel)]="config.itemsPerPage">
+                                </div> -->
+                        <div class="col-lg-12 col-md-12 ">
+                            <pagination-controls class="float-right" (pageChange)="pageChanged($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

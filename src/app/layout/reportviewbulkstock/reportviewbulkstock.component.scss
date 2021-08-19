@@ -1,0 +1,207 @@
+.cyan.lighten-2 {
+
+    background-color: 
+
+    #4dd0e1 !important;
+
+}
+
+.light-blue.lighten-2 {
+
+    background-color: 
+
+    #4fc3f7 !important;
+
+}
+
+.blue.lighten-2 {
+
+    background-color: 
+
+    #64b5f6 !important;
+
+}
+
+
+aio-search-box.search-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    min-width: 150px;
+    height: 40px;
+
+    ::placeholder{
+       font-size:14;
+        color:white;
+      }
+  
+    input {
+      color: white;
+      border: none;
+      border-radius: 100px;
+      background-color:#398bf7;
+      padding: 18px 16px;
+      margin-left: 8px;
+      width: 180px;
+      max-width: 240px;
+      height: 50%;
+      -webkit-appearance: none;
+  
+      &:focus {
+        outline: none;
+      }
+  
+       &:bp(big) {
+        transition: width 0.4s ease-in-out;
+      }
+         &:focus {
+           width: 50%;
+        }
+
+     
+    }
+   
+    
+  }
+  .flex{
+    display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0px 10px 0px;
+  }
+
+  .flexRow{
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0px 10px 0px;
+  }
+  .flex-50{
+  display: flex;
+  flex: 50%;
+  }
+
+  .m8{
+    margin: 8px;
+  }
+
+  .center-center{
+    justify-content: center;
+  }
+ 
+
+  .m-t-50{
+    margin-top: 50px;
+  }
+
+  // .example-container {
+  //   height: 400px;
+  //   overflow: auto;
+  // }
+  
+  table {
+    width: 100%;
+  }
+
+  
+ .mattable{
+  
+  font-size: 15px;
+  color: white;
+  background-color: #398BF7;
+  min-height: 70px;
+  border-right: 1px solid;
+ }
+
+ table{
+  min-width: 1012px;
+ }
+
+ .headingFont{
+   font-size: 32px;
+ }
+
+ .btn:disabled{
+   outline: none;
+   box-shadow: none;
+   cursor: not-allowed;
+   border: none;
+   background-color: rgba(0,0,0,.12);;
+ }
+
+ .center{
+   text-align: center;
+ }
+
+.mat-footer-row{
+  border: none;
+}
+
+.mat-footer-cell{
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .hide-arrow .mat-sort-header-arrow {
+  color: #fff !important;
+}
+.flex-btn{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  }
+
+  .mat-row, .mat-header-row {  
+    min-width: 2800px;  
+    width: 100%;  
+ }  
+
+
+
+
+ .example-container {
+  height: 400px;
+  overflow: auto;
+}
+
+.mat-cell{
+text-align: center;
+}
+
+
+
+
+
+.custom-button{
+  position: absolute;
+  
+ 
+  margin-left: 350px;
+  color: white;
+  
+  background-color: 
+
+  #398BF7 !important;
+  font-family: Montserrat,sans-serif !important;
+  font-size: 16px !important;
+
+}
+
+.custom-buttontwo{
+  position: absolute;
+  right: 30px;
+  margin-right: 380px;
+  color: white;
+  
+  background-color: 
+
+  #398BF7 !important;
+
+  font-family: Montserrat,sans-serif !important;
+  font-size: 16px !important;
+}
+.nxt{
+  margin-left: 327px;
+  margin-top: 10px;
+  color: black !important;
+ 
+}

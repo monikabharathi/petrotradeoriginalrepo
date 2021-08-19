@@ -1,0 +1,330 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card bg-primary">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><img src="assets/images/icon/stock.png"
+                                            height="50" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h2 class="text-white m-t-10 m-b-0"> Total Stock - Plan</h2>
+
+                                        <div *ngFor="let key of letmetry">
+
+                                            <div *ngFor="let row of forCarddata[key]">
+
+                                                <h3 class="text-white m-t-10 m-b-0">Total Plan ({{key}})</h3>
+                                                <h4 class="m-t-0 text-white">{{row.PlanValue | number : '1.2-2'}}</h4>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="align-self-center">
+                                        <h2 class="text-white m-t-10 m-b-0">Total Stock - Actual</h2>
+
+                                        <div *ngFor="let key of letmetry">
+
+                                            <div *ngFor="let row of forCarddata[key]">
+
+                                                <h3 class="text-white m-t-10 m-b-0">Total Actual ({{key}})</h3>
+                                                <h4 class="m-t-0 text-white">{{row.ActualValue | number : '1.2-2'}}</h4>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-danger">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><img src="assets/images/icon/sales.png"
+                                            height="50" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h2 class="text-white m-t-10 m-b-0">Total Sales - Forecast</h2>
+
+
+                                        <div *ngFor="let key of letmetry">
+
+                                            <div *ngFor="let row of forCarddata[key]">
+
+                                                <h3 class="text-white m-t-10 m-b-0">Total Forecast ({{key}})</h3>
+                                                <h4 class="m-t-0 text-white">{{row.TotalForecastValue | number :
+                                                    '1.2-2'}}</h4>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="align-self-center">
+                                        <h2 class="text-white m-t-10 m-b-0">Total Sales </h2>
+
+
+                                        <div *ngFor="let key of letmetry">
+
+                                            <div *ngFor="let row of forCarddata[key]">
+
+                                                <h3 class="text-white m-t-10 m-b-0">Total Actual Sale ({{key}})</h3>
+                                                <h4 class="m-t-0 text-white">{{row.TotalSaleValue | number : '1.2-2'}}
+                                                </h4>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">Add Data</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12 align-self-center">
+                            <form [formGroup]="reportform" class="m-t-12" novalidate autocomplete="off">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <h6><strong>Start Date</strong> <span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" (bsValueChange)="emptyValue1($event)"
+                                                    placeholder="Select the Date" class="form-control"
+                                                    formControlName="fromdate" bsDatepicker>
+                                            </div>
+                                            <div
+                                                *ngIf="reportform.controls['fromdate'].invalid && (reportform.controls['fromdate'].dirty || reportform.controls['fromdate'].touched)">
+                                                <div *ngIf="reportform.controls['fromdate'].errors.required"
+                                                    style="color: red;">From Date Required*</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <h6><strong>End Date</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" [minDate]="reportform.value.todate"
+                                                    placeholder="Select the Date" class="form-control"
+                                                    formControlName="todate" bsDatepicker>
+                                            </div>
+                                            <div
+                                                *ngIf="reportform.controls['todate'].invalid && (reportform.controls['todate'].dirty || reportform.controls['todate'].touched)">
+                                                <div *ngIf="reportform.controls['todate'].errors.required"
+                                                    style="color: red;">To Date Required*</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <h6><strong>Today </strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" name="today" standalone="true"
+                                                    [minDate]="reportform.value.todaydate" formControlName="todaydate"
+                                                    (change)="assigntoday(reportform)" placeholder="Select the Date"
+                                                    class="form-control" bsDatepicker>
+                                            </div>
+                                            <div
+                                                *ngIf="reportform.controls['todaydate'].invalid && (reportform.controls['todaydate'].dirty || reportform.controls['todaydate'].touched)">
+                                                <div *ngIf="reportform.controls['todaydate'].errors.required"
+                                                    style="color: red;">Today Date Required*</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Depot Name</strong> <span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <select name="select" id="depotselect" class="form-control"
+                                                    formControlName="depotname"
+                                                    (change)="getproductlistfordepot($event.target.value)">
+                                                    <option value="" disabled selected>Select Depot Name</option>
+                                                    <option value="all">All</option>
+
+                                                    <option [value]=c.DEPOT_ID *ngFor="let c of collection.data">
+                                                        {{c.DEPOT_NAME}}</option>
+                                                </select>
+                                            </div>
+                                            <div
+                                                *ngIf="reportform.controls['depotname'].invalid && (reportform.controls['depotname'].dirty || reportform.controls['depotname'].touched)">
+                                                <div *ngIf="reportform.controls['depotname'].errors.required"
+                                                    style="color: red;">Depot Name Required*</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Product Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <select name="products" id="select" required class="form-control"
+                                                    formControlName="productid">
+                                                    (ngModelChange)="onProductChanged()"
+                                                    (change)="showgraph($event.target.value)" [(ngModel)]="products">
+                                                    <option value="" disabled selected>Select Product Name</option>
+                                                    <option value="all">All</option>
+                                                    <option [value]=c.productid *ngFor="let c of productlist">
+                                                        {{c.productname}}</option>
+                                                </select>
+                                            </div>
+                                            <div
+                                                *ngIf="reportform.controls['productid'].invalid && (reportform.controls['productid'].dirty || reportform.controls['productid'].touched)">
+                                                <div *ngIf="reportform.controls['productid'].errors.required"
+                                                    style="color: red;">Product Name Required*</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-box d-flex justify-content-center" style="flex: 1;">
+                                        <button type="button" class="btn btn-info" [disabled]="reportform.invalid"
+                                            (click)="onSubmit(reportform)">Submit</button>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-body">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card" *ngFor="let key of linechartDataArray | keyvalue; index as i ">
+                        <div class="card-header bg-info text-white text-center">
+                            Stock Progression - {{key.key}}
+                            <div class="float-right">
+                                <div class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="true">
+                                    <button dropdownToggle type="button" class="btn btn-info text-white">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <!-- <button type="button" class="btn btn-primary" (click)="dropdown.isOpen = !dropdown.isOpen">Toggle</button> -->
+                                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                                (click)="downloadPng($event)">PNG</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                                (click)="downloadJpg($event)">JPEG</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                                (click)="downloadPdf($event)">PDF</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div>
+                                    <div id="capture" style="display: block;">
+                                        <canvas baseChart [datasets]="key.value.data" [labels]="key.value.label"
+                                            [options]="lineChartOptions" [colors]="lineChartColors"
+                                            [legend]="lineChartLegend" [chartType]="lineChartType"
+                                            [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)"
+                                            (chartClick)="chartClicked($event)">
+                                        </canvas>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" *ngFor="let key of linechartDataArrayTotalProgression | keyvalue; index as i ">
+                        <div class="card-header bg-info text-white text-center">
+                            Total Stock Progression - {{key.key}}
+                            <div class="float-right">
+                                <div class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="true">
+                                    <button dropdownToggle type="button" class="btn btn-info text-white">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <!-- <button type="button" class="btn btn-primary" (click)="dropdown.isOpen = !dropdown.isOpen">Toggle</button> -->
+                                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                                (click)="downloadPng($event)">PNG</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                                (click)="downloadJpg($event)">JPEG</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                                (click)="downloadPdf($event)">PDF</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div>
+                                    <div id="capture" style="display: block;">
+                                        <canvas baseChart [datasets]="key.value.data" [labels]="key.value.label"
+                                            [options]="lineChartOptions" [colors]="lineChartColorstotal"
+                                            [legend]="lineChartLegend" [chartType]="lineChartType"
+                                            [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)"
+                                            (chartClick)="chartClicked($event)">
+                                        </canvas>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card">
+        <div class="card-body">
+        <div class="row">
+                <table class="table table-bordered">
+                        <thead class="bg-info text-white">
+                        <tr>
+                            <th>Today</th>
+                            <th>VTE GSL91R</th>
+                            <th>VTE GSL95R</th>
+                            <th>VTE DSL </th>
+                      
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>MAX Value</td>
+                            <td>268.91 </td>
+                            <td>140.00 </td>
+                            <td>770.00 </td>
+                     
+                        </tr>
+                        <tr>
+                            <td>Min Value </td>
+                            <td>-82.79 </td>
+                            <td>0.00 </td>
+                            <td>-472.68 </td>
+                
+                        </tr>
+                        </tbody>
+                    </table>
+                </div> 
+            </div>
+        </div> -->
+
+
+    </div>
+</div>

@@ -1,0 +1,138 @@
+<ng-template #DeleteAlert>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Alert!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h4>Min value is greater than the Max value.</h4> 
+    </div>
+    
+    <div class="modal-footer">
+     <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Cancel</button>
+    </div>
+</ng-template> 
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">Edit Tank</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12 align-self-center">
+                            <form name="form" (ngSubmit)="f.form.valid && validateullage(form,DeleteAlert)" #f="ngForm"
+                                autocomplete="off">
+                    <!--  hidden tankid -->
+                                <input type="hidden" name ="tankid" [(ngModel)]="ullage.tankid">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Depot Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Depot name"  readonly='true' class="form-control"
+                                                    name="depotname" [(ngModel)]="ullage.depotname"
+                                                   />
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Product Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Product name"  readonly='true' class="form-control"
+                                                    name="productname" [(ngModel)]="ullage.productname"
+                                                   />
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Tank Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Tank name"  readonly='true' class="form-control"
+                                                    name="tankname" [(ngModel)]="ullage.tankname"
+                                                  
+                                                     />
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Tank Status </strong> <span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <select id="Status" placeholder="select Tank Status" name="tankstatus"
+                                                    [(ngModel)]="ullage.tankstatus" #tankstatus="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && tankstatus.invalid }"
+                                                    required class="form-control">
+                                                    <option value="" disabled selected>Select Tank Status</option>
+                                                    <option value="{{c.CODE}}" *ngFor="let c of tanklist">{{c.STATUS}} </option> 
+                                               <!--      <option value="01">ACTIVE</option>
+                                                    <option value="02">IN-ACTIVE </option> -->
+                                                </select>
+                                                <div *ngIf="f.submitted && tankstatus.invalid" class="invalid-feedback">
+                                                    <div *ngIf="tankstatus.errors.required">Tank Status Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Min Value</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Min Value" class="form-control"
+                                                    name="minvalue" [(ngModel)]="ullage.minvalue" #minvalue="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && minvalue.invalid }"
+                                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                                                    required />
+                                                <div *ngIf="f.submitted && minvalue.invalid" class="invalid-feedback">
+                                                    <div *ngIf="minvalue.errors.required">Min Value Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Max Value</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Max Value" class="form-control"
+                                                    name="maxvalue" [(ngModel)]="ullage.maxvalue" #maxvalue="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && maxvalue.invalid }"
+                                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                                                    required />
+                                                <div *ngIf="f.submitted && maxvalue.invalid" class="invalid-feedback">
+                                                    <div *ngIf="maxvalue.errors.required">Max Value Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                  
+
+                                </div>
+                                <div class="button-box text-center">
+                                    <button class="btn btn-danger" [routerLink]="'../ullage'">Cancel</button>
+                                    <button class="btn btn-info" type="submit" [hidden]="mysubmit">Submit</button>
+                                 
+                                   
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+      

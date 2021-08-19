@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-info">
+          <h4 class="m-b-0 text-white">Add New Profile</h4>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12 align-self-center">
+            <form name="form" (ngSubmit)="f.form.valid && addProfile(form)" #f="ngForm" autocomplete="off">
+              <div class="row">
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <h6><strong>Profile Name</strong><span class="text-danger">*</span></h6>
+                    <div class="controls">
+                      <input type="text"  placeholder="Profile Name"   
+                        class="form-control"   name="profilename" [(ngModel)]="model.profilename"  (blur)="checkProfileName($event.target.value)" #profilename="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && profilename.invalid }"  (blur)="getMenus('B')"
+                        onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                        required   />
+                      <div *ngIf="f.submitted && profilename.invalid" class="invalid-feedback">
+                        <div *ngIf="profilename.errors.required">Profile Name Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             
+       <!--   <div class="col-lg-6">
+            <div class="form-group">
+              <h6><strong>Profile Type </strong> <span class="text-danger">*</span></h6>
+              <div class="controls">
+                <select id="select" placeholder="select Profile Type" name="profiletype"
+                  [(ngModel)]="model.profiletype" #profiletype="ngModel" 
+                  [ngClass]="{ 'is-invalid': f.submitted && profiletype.invalid }" required class="form-control">
+              
+                  <option value="B" selected>Default</option> 
+                 
+                </select>
+                <div *ngIf="f.submitted && profiletype.invalid" class="invalid-feedback">
+                  <div *ngIf="profiletype.errors.required">Select Profile Type Required</div>
+                </div>
+              </div>
+            </div>
+          </div>  --> <!-- (blur)="getMenus($event.target.value)" -->
+
+<!-- 
+          <div class="col-lg-6">
+            <div class="form-group">
+                <h6><strong>Profile Type</strong><span class="text-danger">*</span></h6>
+                <div class="controls">
+                    <input type="text" readonly placeholder="Profile Type" class="form-control"
+                       name="profiletype"
+                        [(ngModel)]="model.profiletype" />
+
+                </div>
+            </div>
+        </div> -->
+
+              </div>
+
+      
+        <div class="card">
+          <div *ngFor="let p of parentmenu.parent;let i=index">
+            <div class="alert alert alert-success">
+              <div class="custom-checkbox">
+                <input type="checkbox" [id]="p.PARENTID" [name]="p.PARENTID" [(ngModel)]="p.FLAG" (change)="getMenu(p.PARENTID,p.PARENTNAME,p.FLAG)">
+                <label [for]="p.PARENTID">{{p.PARENTNAME}}</label>
+              </div>
+            </div>
+            <div *ngIf="p.FLAG === true">
+              <div class="sub-menu" *ngFor="let m of parentmenu.sub;let j=index">
+                <div *ngIf="m.PARENTID===p.PARENTID">
+                  <div class="custom-checkbox sub-menu-header">
+                    <input type="checkbox" [id]="m.SUBMENUID" [name]="m.SUBMENUID" [(ngModel)]="m.FLAG" [checked]="p.FLAG === true"  (change)="getsubMenu(m.SUBMENUID,m.SUBMENUNAME,m.FLAG)">
+                    <label [for]="m.SUBMENUID">{{m.SUBMENUNAME}}</label>
+                  </div>
+                  <div class="chlid-menu">
+                    <div *ngFor="let s of parentmenu.undersub;let k = index">
+                      <div *ngIf="(s.SUBMENUID===m.SUBMENUID) && (m.PARENTID===p.PARENTID)">
+                        <div class="custom-checkbox">
+                          <input type="checkbox" [id]="s.SUPERMENUID" [name]="s.SUPERMENUID" [(ngModel)]="s.FLAG">
+                          <label [for]="s.SUPERMENUID">{{s.SUPERMENUNAME}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+              <div class="button-box text-center">
+                <button class="btn btn-danger" [routerLink]="'../profile'">Cancel</button>
+                <button class="btn btn-info" type="submit" [hidden]="mysubmit">Submit</button>
+             
+               
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

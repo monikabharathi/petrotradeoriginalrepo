@@ -1,0 +1,597 @@
+<!-- <div class="page-wrapper report">
+    <div class="container-fluid"> -->
+     <!--    <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Report</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="'/layout'">Home</a></li>
+                    <li class="breadcrumb-item">Reports</li>
+                    <li class="breadcrumb-item active"><a [routerLink]="'../reportbulkstock'" [queryParams]="{ report: reportname }">{{reportname}}</a></li>
+                    <li class="breadcrumb-item">{{reportname}} Report</li>
+                </ol>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">{{reportname}} Report</h4>
+                    </div>
+                     <div class="card-body">
+                     
+                        <div *ngIf="choosereport=='1'" class="flexRow"><div class="flex-50"><h4> <strong>Depot : {{depotname}} </strong> </h4></div><div class="flex-50" style="justify-content: flex-end;"> <h4 style="margin-right: 25px;">  </h4></div></div> 
+                        <div *ngIf="checkLoading==0"class="flexRow">
+                           <div class="flex-50">
+                             <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                                <div *ngIf="excel" class="btn-group" role="group" aria-label="First group">
+                                    
+                                    <button type="button" class="btn light-blue lighten-2 btn-info" style="border: none !important;" id="excel"(click)="download()">EXCEL</button>
+                                   
+                                </div>
+                            </div>
+                          </div>
+                          <div class="flex-50">
+                            <aio-search-box class="search-container"><input aria-label="search" placeholder="Search" type="search" [(ngModel)]="searchText"></aio-search-box>
+                          </div>
+                        </div>
+
+                        <div *ngIf="checkLoading==1" class="flex"><h4>Loading, Please Wait...</h4></div> 
+                          <div *ngIf="choosereport=='1'"class="example-container mat-elevation-z8 m-t-50" #TABLE>
+                            <table mat-table #mytable [dataSource]="valueArray  |   filter:searchText " id="reporttable" (matSortChange)="sortData($event)" matSort>
+                              <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns" >
+                                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mattable hide-arrow">
+                                  <span *ngIf="column !== 'SNo'" >{{column}}</span> 
+                                </th>
+                                  <td mat-cell *matCellDef="let row">{{row[column]}}</td>
+                                
+                              </ng-container>
+                              <ng-container matColumnDef="header-row-first-group">
+                                <th mat-header-cell *matHeaderCellDef   [attr.colspan]="10" style="background-color: #398bf9; text-align: center; color: white; font-size: 15px;" >
+                                  Product Name-{{productName}}
+                                </th>
+                              </ng-container>
+
+                             <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                 <span class="headingFont"> No Records Found </span> 
+                                </mat-footer-cell>
+                              </ng-container>
+
+                              <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                  Loading, please wait...
+                                </mat-footer-cell>
+                              </ng-container>
+                              
+                            <tr mat-header-row [hidden]="valueArray.length == 0" *matHeaderRowDef="['header-row-first-group']; sticky: true"></tr>
+                              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                              <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+                              <mat-footer-row *matFooterRowDef="['noData']" [hidden]="tableLoading || (valueArray && valueArray.length > 0)"></mat-footer-row>
+                              <mat-footer-row *matFooterRowDef="['loading']" [hidden]="!tableLoading"></mat-footer-row> 
+                            </table>
+                          </div>  
+                         
+                           <div *ngIf="choosereport == '2'"class="example-container mat-elevation-z8 m-t-50" #TABLE>
+                            <table mat-table #mytable [dataSource]="dataSource  |   filter:searchText " id="forecasttable" (matSortChange)="sortData($event)" matSort>
+                              <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns" > 
+                                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mattable hide-arrow">
+                                  <span *ngIf="keyToExclude.includes(column)">{{column}}</span>
+                                  <span *ngIf="column.includes('Total')">{{column}}</span> 
+                                  <span *ngIf="column && column !== 'Date' && !column.includes('Total') && (column.split('_').length > 0)">{{column.split('_')[1]}}</span> 
+                                </th>
+                                  <td mat-cell *matCellDef="let row"  ><span>{{row[column]}}</span></td>
+                              </ng-container>
+                              
+                              <ng-container [matColumnDef]="header" *ngFor="let header of primryHeader" > 
+                                <ng-container *ngIf="header === 'date'">
+                                  <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" class="mattable hide-arrow center" ></th>
+                                  </ng-container>
+                                  <ng-container *ngIf="header !== 'date'">
+                                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="productForForCastCount[header]" class="mattable hide-arrow center" >
+                                      <span *ngIf="header !== 'Total'">Depot - </span>{{header}}
+                                    </th>
+                                  </ng-container>
+                              </ng-container>
+
+                              <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                  <span class="headingFont"> No Records Found </span> 
+                                </mat-footer-cell>
+                              </ng-container>
+
+                              <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                  Loading, please wait...
+                                </mat-footer-cell>
+                              </ng-container>
+
+                                 <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="primryHeader; sticky: true"></tr>
+                               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                              <mat-footer-row *matFooterRowDef="['noData']" [hidden]="tableLoading || (dataSource && dataSource.length > 0)"></mat-footer-row>
+                               <mat-footer-row *matFooterRowDef="['loading']" [hidden]="!tableLoading"></mat-footer-row>
+                            </table>
+                          </div> 
+
+
+                           <!--Purchase summary start-->
+                           <div
+                           *ngIf="choosereport == '3'"
+                           class="example-container mat-elevation-z8 m-t-50"
+                           #TABLE
+                         >
+                 
+                           <table
+                             mat-table
+                             #mytable
+                             [dataSource]="dataSource  |   filter:searchText"
+                             id="forecasttable"
+                             (matSortChange)="sortData($event)"
+                             matSort
+                           >
+                             <ng-container
+                               [matColumnDef]="column"
+                               *ngFor="let column of displayedColumns"
+                             >
+                               <th
+                                 mat-header-cell
+                                 *matHeaderCellDef
+                                 mat-sort-header
+                                 class="mattable hide-arrow"
+                               >
+                                 <span *ngIf=" keyToExclude.includes(column)" >
+                                   <span *ngIf="reportname === 'Supply Plan Sale'">
+                                     <span *ngIf="column === 'Week'">Week</span>
+                                     <span *ngIf="column === 'Date'">From Date</span>
+                                     <span *ngIf="column === 'To'">To Date</span>
+                                   </span>
+                                   <span *ngIf="reportname != 'Supply Plan Sale'"> {{ column }} </span>
+                                 </span>
+                                 <span *ngIf="column && !keyToExclude.includes(column) &&
+                                     column.split('_').length > 0">{{ column.split("_")[2] }}</span>
+                               </th>
+                               <td mat-cell *matCellDef="let row">
+                                 <span>{{ row[column] }}</span>
+                               </td>
+                             </ng-container>
+             
+                             <ng-container matColumnDef="noData">
+                               <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                 <span class="headingFont"> No Records Found </span>
+                               </mat-footer-cell>
+                             </ng-container>
+             
+                             <ng-container matColumnDef="loading">
+                               <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                 Loading, please wait...
+                               </mat-footer-cell>
+                             </ng-container>
+             
+                             <!-- For global header-->
+                             <ng-container
+                               [matColumnDef]="header"
+                               *ngFor="let header of globalHeaderPs"
+                             >
+                               <ng-container
+                                 *ngIf="
+                                   header === 'globaldate' 
+                                 "
+                               >
+                                 <th
+                                   mat-header-cell
+                                   *matHeaderCellDef
+                                   [attr.colspan]="colSpan"
+                                   class="mattable hide-arrow center"
+                                 ></th>
+                               </ng-container>
+                               <ng-container *ngIf="reportname != 'Purchase Summary' && header !== 'globaldate'">
+                                 <ng-container *ngIf="header==='Total'">
+                                  <th 
+                                  mat-header-cell
+                                  *matHeaderCellDef
+                                  [attr.colspan]="globalHeaderLengths[header]/2"
+                                  class="mattable hide-arrow center"
+                                >
+                                  <span  *ngIf="header==='Total'">Total Supply</span>
+                                </th>
+                                 </ng-container>
+                                 <ng-container *ngIf="header==='Supply'">
+                                  <th 
+                                  mat-header-cell
+                                  *matHeaderCellDef
+                                  [attr.colspan]="globalHeaderLengths['Supply']"
+                                  class="mattable hide-arrow center"
+                                >
+                                  <span  *ngIf="header==='Supply'">{{ header }}</span>
+                                </th>
+                                 </ng-container>
+                                 
+                                 <ng-container *ngIf="header==='Sale'">
+                                  <th 
+                                  mat-header-cell
+                                  *matHeaderCellDef
+                                  [attr.colspan]="globalHeaderLengths['Sale']"
+                                  class="mattable hide-arrow center"
+                                >
+                                  <span  *ngIf="header==='Sale'">{{ header }}</span>
+                                </th>
+                                 </ng-container>
+                                 <ng-container *ngIf="header==='total'">
+                                  <th 
+                                  mat-header-cell
+                                  *matHeaderCellDef
+                                  [attr.colspan]="globalHeaderLengths['Total']/2"
+                                  class="mattable hide-arrow center"
+                                >
+                                  <span>Total Sale</span>
+                                </th>
+                                 </ng-container>
+                                 
+                               </ng-container>
+                             </ng-container>
+
+
+                             
+             
+                             <!-- For primaryHeader header-->
+                             <ng-container
+                               [matColumnDef]="header"
+                               *ngFor="let header of primaryHeaderPs"
+                             >
+                               <ng-container
+                                 *ngIf="
+                                   header === 'primarydate'
+                                 "
+                               >
+                                 <th
+                                   mat-header-cell
+                                   *matHeaderCellDef
+                                   [attr.colspan]="colSpan"
+                                   class="mattable hide-arrow center"
+                                 ></th>
+                               </ng-container>
+                               <ng-container *ngIf="header !== 'primarydate'">
+                                 <th
+                                   mat-header-cell
+                                   *matHeaderCellDef
+                                   [attr.colspan]="primaryHeaderLengthPs[header]"
+                                   class="mattable hide-arrow center"
+                                 >
+                                   {{ header }}
+                                 </th>
+                               </ng-container>
+                             </ng-container>
+             
+                             <!-- For Product header-->
+                             <ng-container
+                               [matColumnDef]="header"
+                               *ngFor="let header of productHeaderPs"
+                             >
+                               <ng-container *ngIf="header === 'date'">
+                                 <th
+                                   mat-header-cell
+                                   *matHeaderCellDef
+                                   [attr.colspan]="colSpan"
+                                   class="mattable hide-arrow center"
+                                 ></th>
+                               </ng-container>
+                               <ng-container *ngIf="header !== 'date' && reportname!=='Purchase Summary'">
+                                 <th
+                                   mat-header-cell
+                                   *matHeaderCellDef
+                                   [attr.colspan]="productHeaderLengthPs[header]"
+                                   class="mattable hide-arrow center"
+                                 >
+                                   {{ (header?.split("_"))[1] }}
+                                 </th>
+                               </ng-container>
+                               <ng-container *ngIf="header !== 'date'  && reportname==='Purchase Summary'">
+                                <th
+                                  mat-header-cell
+                                  *matHeaderCellDef
+                                  [attr.colspan]="productHeaderLengthPs[header]"
+                                  class="mattable hide-arrow center"
+                                >
+                                  Total
+                                </th>
+                              </ng-container>
+                             </ng-container>
+                             <ng-container *ngIf="reportname == 'Supply Plan Sale'">
+                              <tr
+                                mat-header-row
+                                *matHeaderRowDef="globalHeaderPs; sticky: true"
+                              ></tr>
+                            </ng-container>
+             
+                            
+             
+                             <tr
+                               mat-header-row
+                               [hidden]="!dataSource.length"
+                               *matHeaderRowDef="primaryHeaderPs; sticky: true"
+                             ></tr>
+             
+                             <tr
+                               mat-header-row
+                               [hidden]="!dataSource.length"
+                               *matHeaderRowDef="productHeaderPs; sticky: true"
+                             ></tr>
+             
+                             <tr
+                               mat-header-row
+                               *matHeaderRowDef="displayedColumns; sticky: true"
+                             ></tr>
+                             <tr
+                               mat-row
+                               *matRowDef="let row; columns: displayedColumns"
+                             ></tr>
+                             <mat-footer-row
+                               *matFooterRowDef="['noData']"
+                               [hidden]="
+                                 tableLoading || (dataSource && dataSource.length > 0)
+                               "
+                             ></mat-footer-row>
+                             <mat-footer-row
+                               *matFooterRowDef="['loading']"
+                               [hidden]="!tableLoading"
+                             ></mat-footer-row>
+                           </table>
+
+                               <!-- *ngFor ="let row of forSaleChart[key.key]" -->
+                           <!-- <table class="table table-bordered">
+                            <thead class="bg-info text-white">
+                            <tr> 
+                                <th>Date</th>
+                                <th>Forecast</th>
+                                <th>Actual</th>
+                                <th>Variance %</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                          
+                                    <tr >
+        
+                                        <td>Date</td>
+                                        <td>Forecast</td>
+                                        <td>Actual</td>
+                                        <td>unitvariance%</td>
+                                    </tr>
+                                
+                            </tbody>
+                        </table>  -->
+                         </div>
+                        <!--Purchase summary End-->
+
+                        <!-- All option-->
+                        <!-- [sticky]="isSticky(column)" -->
+                       <div *ngIf="choosereport == '4'"class="example-container mat-elevation-z8 m-t-50" #TABLE>
+                          <table mat-table #mytable [dataSource]="dataSource  |   filter:searchText " id="forecasttable" (matSortChange)="sortData($event)" matSort>
+                            <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns"  >  
+                              <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mattable hide-arrow">
+                                <span *ngIf="keyToExclude.includes(column) && reportname=='Forecast Performance'" >
+                                  <span *ngIf="column === 'Week'">Week</span>
+                                <span *ngIf="column === 'Date' && reportname=='Forecast Performance'" >From Date</span>
+                                <span *ngIf="column === 'To'">To Date</span>
+                              </span> 
+                                <span *ngIf="keyToExclude.includes(column) && reportname !='Forecast Performance'" >
+                                 {{column}}
+                              </span>
+                                <span *ngIf="column.includes('Total')">{{column}}</span> 
+                                <span *ngIf="column && !keyToExclude.includes(column) && !column.includes('Total') && (column.split('_').length > 0)">{{column.split('_')[2]}}</span> 
+                              </th>
+                                <td mat-cell  *matCellDef="let row" [style.background-color]="getBackgroundColor(row,column)" ><span *ngIf="!column.includes('Actual') && !column.includes('Plan')" >{{row[column]}}</span>
+                                <span *ngIf="column.includes('Actual') || column.includes('Plan')" >{{row[column] | number:'1.0':'en-US'}}</span></td>
+                            </ng-container>
+                            
+                            <ng-container [matColumnDef]="header" *ngFor="let header of primryHeader"> 
+                              <ng-container *ngIf="header === 'date'">
+                                <th mat-header-cell *matHeaderCellDef [attr.colspan]="dummyColspan" class="mattable hide-arrow center" ></th>
+                                </ng-container>
+                                <ng-container *ngIf="header !== 'date'">
+                                  <th mat-header-cell *matHeaderCellDef [attr.colspan]="primaryHeaderAllOption[header]" class="mattable hide-arrow center" >
+                                    <span *ngIf="header !== 'Total'">Depot - </span>{{header}}
+                                  </th>
+                                </ng-container>
+                            </ng-container>
+
+                            <ng-container [matColumnDef]="header" *ngFor="let header of productHeaderAllOption" > 
+                              <ng-container *ngIf="header === 'dummy' ">
+                                <th mat-header-cell *matHeaderCellDef [attr.colspan]="dummyColspan" class="mattable hide-arrow center" ></th>
+                                </ng-container>
+                               
+                                <ng-container *ngIf="header !== 'dummy' ">
+                                  <th mat-header-cell *matHeaderCellDef [attr.colspan]="colSpan" class="mattable hide-arrow center" >
+                                    <span *ngIf="header !== 'Total'">Depot - </span>{{header.split('_')[0]}}
+                                    <span *ngIf="header !== 'Total'">Product - </span>{{header.split('_')[1]}}
+                                  </th>
+                                </ng-container>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="noData">
+                              <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                <span class="headingFont"> No Records Found </span> 
+                              </mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                              <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                                Loading, please wait...
+                              </mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container [matColumnDef]="header" *ngFor="let header of totalArray" > 
+                                <td mat-cell *matFooterCellDef [attr.colspan]="1">
+                                    <span *ngIf="header.split('_').length === 5">{{header.split('_')[4]}}</span>
+                                    <span *ngIf="header.includes('Date')">Total</span>
+                                </td>
+                            </ng-container>
+
+                               <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="primryHeader; sticky: true"></tr>
+                               <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="productHeaderAllOption; sticky: true"></tr>
+                             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                            <mat-footer-row *matFooterRowDef="['noData']" [hidden]="tableLoading || (dataSource && dataSource.length > 0)"></mat-footer-row>
+                             <mat-footer-row *matFooterRowDef="['loading']" [hidden]="!tableLoading"></mat-footer-row>
+                             <tr [hidden]="reportname  != 'Bulk Stock' || !dataSource.length"  mat-footer-row *matFooterRowDef="totalArray" ></tr>
+                             
+                          </table>
+                        </div> 
+                        <!-- End of All Option-->
+
+                       
+<!-- Supply Performance-->
+<div
+*ngIf="choosereport == '5'"
+class="example-container mat-elevation-z8 m-t-50"
+#TABLE
+>
+<table
+mat-table
+#mytable
+[dataSource]="dataSource | filter: searchText"
+id="forecasttable"
+(matSortChange)="sortData($event)"
+matSort
+>
+<ng-container
+[matColumnDef]="column"
+*ngFor="let column of displayedColumns"
+>
+<th
+mat-header-cell
+*matHeaderCellDef
+mat-sort-header
+class="mattable hide-arrow"
+>
+<span *ngIf="column === 'Date'">{{ column }}</span>
+<span *ngIf="column.includes('Total')">{{ column }}</span>
+<span
+*ngIf="
+column &&
+column !== 'Date' &&
+!column.includes('Total') &&
+column.split('_').length > 0
+"
+>{{ column.split("_")[1] }}</span
+>
+</th>
+<td mat-cell *matCellDef="let row">
+<span>{{ row[column] }}</span>
+</td>
+</ng-container>
+
+<ng-container
+[matColumnDef]="header"
+*ngFor="let header of primryHeader"
+>
+<ng-container *ngIf="header === 'date'">
+<th
+mat-header-cell
+*matHeaderCellDef
+[attr.colspan]="1"
+class="mattable hide-arrow center"
+></th>
+</ng-container>
+<ng-container *ngIf="header !== 'date'">
+<th
+mat-header-cell
+*matHeaderCellDef
+[attr.colspan]="products.length * 2"
+class="mattable hide-arrow center"
+>
+<span *ngIf="header !== 'Total'"></span
+>{{ header }}
+</th>
+</ng-container>
+</ng-container>
+
+<ng-container
+[matColumnDef]="header"
+*ngFor="let header of products"
+>
+<ng-container *ngIf="header === 'dummy'">
+<th
+mat-header-cell
+*matHeaderCellDef
+[attr.colspan]="1"
+class="mattable hide-arrow center"
+></th>
+</ng-container>
+<ng-container *ngIf="header !== 'dummy'">
+<th
+mat-header-cell
+*matHeaderCellDef
+[attr.colspan]="2"
+class="mattable hide-arrow center"
+>
+<span *ngIf="header !== 'Total'"></span
+>{{ header }}
+</th>
+</ng-container>
+</ng-container>
+
+<ng-container matColumnDef="noData">
+<mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+<span class="headingFont"> No Records Found </span>
+</mat-footer-cell>
+</ng-container>
+
+<ng-container matColumnDef="loading">
+<mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+Loading, please wait...
+</mat-footer-cell>
+</ng-container>
+
+<tr
+mat-header-row
+[hidden]="!dataSource.length"
+*matHeaderRowDef="primryHeader; sticky: true"
+></tr>
+<tr
+mat-header-row
+[hidden]="!dataSource.length"
+*matHeaderRowDef="products; sticky: true"
+></tr>
+<tr
+mat-header-row
+*matHeaderRowDef="displayedColumns; sticky: true"
+></tr>
+<tr
+mat-row
+*matRowDef="let row; columns: displayedColumns"
+></tr>
+<mat-footer-row
+*matFooterRowDef="['noData']"
+[hidden]="
+tableLoading || (dataSource && dataSource.length > 0)
+"
+></mat-footer-row>
+<mat-footer-row
+*matFooterRowDef="['loading']"
+[hidden]="!tableLoading"
+></mat-footer-row>
+</table>
+</div>
+<!-- End-->
+                          
+                          <div class="flexRow center-center">
+                            <!-- <div class="flex m8" > 
+                              <button [disabled]="!currentIndex || (currentIndex === 1)"  mat-raised-button class="btn btn-info" (click)="onPrevious()">Previous</button>
+                            </div> -->
+                            <div *ngIf="checkLoading==0" class="m8">
+                                <a [routerLink]="backpath"><button class="btn btn-info" style="padding: 6px 12px !important;">Back</button></a>
+                            </div>
+                            <!--  [queryParams]="{ report: reportname }" -->
+                            <!-- <div class="m8" >
+                              <button [disabled]="!currentIndex ||( keys?.length == currentIndex)" mat-raised-button class="btn btn-info" (click)="onNext()">Next</button>
+                            </div>  -->
+                        </div>
+                 </div>
+                </div>
+            </div>
+<!--         </div>
+    </div> -->

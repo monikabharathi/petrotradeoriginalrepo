@@ -1,0 +1,198 @@
+<ng-template #DeleteAlert>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Alert!!!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h4>Stock Already Configured For this Depot </h4>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="modalRef.hide()">ok</button>
+    </div>
+</ng-template>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Upload New Bulk Stock</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center"   >
+                    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm"  
+                    enctype="multipart/form-data"
+                    autocomplete="off">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Depot Name </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select id="depotname" placeholder="Select depotname" name="depotname" [disabled]="isDisbale"
+                                            [(ngModel)]="bulkstock.depotname" #depotname="ngModel"
+                                            (input)="getproductlistfordepot($event.target.value)"
+                                            [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" disabled selected>Select Depot Name</option>
+                                            <option value="{{c.DEPOT_ID}}" *ngFor="let c of depotlist">
+                                                {{c.DEPOT_NAME}}</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && depotname.invalid" class="invalid-feedback">
+                                            <div *ngIf="depotname.errors.required">Depot Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!--   [minDate]="minDate"
+                                                    [maxDate]="maxDate"   (bsValueChange)="Bulkstockdate($event) " [minDate]="minDate" [maxDate]="maxDate"  -->
+
+                                    <h6><strong> Date</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Select the Date" class="form-control"
+                                            name="bulkstockDateValue" [(ngModel)]="bulkstock.bulkstockDateValue"
+                                            #bulkstockDateValue="ngModel" readonly="true"
+                                            [ngClass]="{ 'is-invalid': f.submitted && bulkstockDateValue.invalid }"
+                                            required bsDatepicker  [maxDate]="maxDate"
+                                            [bsConfig]="{ dateInputFormat:'DD-MM-YYYY' }"  [disabled]="isDisbale">
+                                        <div *ngIf="f.submitted && bulkstockDateValue.invalid" class="invalid-feedback">
+                                            <div *ngIf="bulkstockDateValue.errors.required">Loaded Date Is
+                                                Required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                  
+
+
+
+
+                        <div class="row" [hidden] ="!prodcut">
+                     <!--    <div class="col-lg-6">
+                            <div class="form-group">
+                                <h6><strong>Product Name </strong> <span class="text-danger">*</span></h6>
+                                <div class="controls">
+                                    <select id="productname" placeholder="select productname"
+                                        name="productname" [(ngModel)]="bulkstock.productname"
+                                        #productname="ngModel"
+
+                                        [ngClass]="{ 'is-invalid': f.submitted && productname.invalid }"
+                                        required class="form-control">
+                                        <option value="undefined" disabled selected>Select Product Name</option>
+                                        <option value="{{c.PRODUCT_ID}}" *ngFor="let c of productlist">
+                                            {{c.PRODUCT_NAME}}</option>
+
+                                    </select>
+                                    <div *ngIf="f.submitted && productname.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="productname.errors.required">product Name Is Required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <h6><strong>Upload File </strong> <span class="text-danger">*</span></h6>
+                                <div class="controls">
+                                    
+                                    <input [(ngModel)]="bulkstock.profileImage" id="upload" name="upload" class="form-control" 
+                                    type="file" [hidden]="mysubmit"
+                                    #upload="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && upload.invalid }"
+                                    required   
+                                    (change)="handleFileInput($event)"
+                                    >   <!-- (change)="selectFile($event)" -->
+
+
+
+                                    <div *ngIf="f.submitted && upload.invalid"
+                                        class="invalid-feedback">
+                                        <div *ngIf="upload.errors.required">File Is Required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        </div>
+                        <br>
+                      
+                        <br>
+
+                        <div class="button-box text-center" [hidden] ="!prodcut">
+                            <button class="btn btn-danger" [routerLink]="'../bulkstock'"  [hidden]="ishidecalcel" >Cancel</button>
+                          <!--   <button class="btn btn-info" type="submit" [hidden]="mysubmit" [disabled]="!f.form.valid">Upload</button> -->
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+                <div class="card">
+                    <div class="card-body"   [hidden]="prodcut">
+                      <h4 class="card-title"><strong>Review Bulk Stock Data</strong> </h4>
+                      <div class="row">
+                        <!-- <div class="col bg-info border p-2 text-center">
+                            <h6 class=" text-white"><strong>Depot Id</strong></h6>
+                          </div> -->
+                        
+                        <div class="col bg-info border p-2 text-center">
+                          <h6 class=" text-white"><strong>Product Id</strong></h6>
+                        </div>
+      
+                      <!--   <div class="col bg-info border p-2 text-center">
+                          <h6 class=" text-white"><strong>Stock Date</strong></h6>
+                        </div> -->
+                        <div class="col bg-info border p-2 text-center">
+                          <h6 class=" text-white"><strong>Opening</strong></h6>
+                        </div>
+                        <div class="col bg-info border p-2 text-center ">
+                          <h6 class=" text-white"><strong>Purchase</strong></h6>
+                        </div>
+                        <div class="col bg-info border p-2 text-center">
+                          <h6 class=" text-white"><strong>Loaded</strong></h6>
+                        </div>
+                        <div class="col bg-info border p-2 text-center ">
+                          <h6 class=" text-white"><strong>Transfer</strong></h6>
+                        </div>
+                       
+                        <div class="col bg-info border p-2 text-center">
+                          <h6 class=" text-white"><strong>Closing</strong></h6>
+                        </div>
+                      </div>
+                     
+                      <div class="row" *ngFor="let p of exceltoJson['sheet1'] ;let i = index">
+                       <!--  <div class="col  bg-light border p-2 text-center" name='productname'  >  {{p.depotid}}</div> -->
+                        <div class="col  bg-light border p-2 text-center" name='productname'  >{{p.productid}}</div>
+                        <!--   <div class="col  bg-light border p-2 text-center" name='openingbalance' >{{p.stockdate}}</div>  --> <!-- :'1.2-2' -->
+                         <div class="col  bg-light border p-2 text-center" name='purchase'> {{p.opening}} </div>
+                        <div class="col  bg-light border p-2 text-center" name='loaded' > {{p.purchase}} </div>
+                        <div class="col  bg-light border p-2 text-center" name='transfer'  > {{p.loaded}} </div>
+                        <div class="col  bg-light border p-2 text-center" name='closing'  >  {{p.transfer}}</div>
+                        <div class="col  bg-light border p-2 text-center" name='closing1'  >  {{p.closing}}</div>
+ 
+                    </div>
+                    </div>
+                    {{msg}}
+                    <div class="button-box text-center"  [hidden]="prodcut">
+                        <button class="btn btn-danger" [routerLink]="'../bulkstock'"  [hidden]="ishidecalcel" >Cancel</button>
+                        <button class="btn btn-info" type="submit"     (click)="uploadExcelfie()"  [hidden]="mysubmit" [disabled]="!f.form.valid">Upload</button>
+                    </div>
+                  </div> 
+
+                
+              
+            </div>
+
+        </div>
+    </div>

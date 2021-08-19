@@ -1,0 +1,374 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Add Data</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center">
+                    <form [formGroup]="reportform" class="m-t-12" novalidate autocomplete="off">
+                   <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <h6><strong>Start Date</strong> <span class="text-danger">*</span></h6>
+                            <div class="controls">
+                                <input type="text"  (bsValueChange)="emptyValue1($event)"
+                                    placeholder="Select the Date" class="form-control" formControlName="fromdate" bsDatepicker>
+                            </div>
+                            <div *ngIf="reportform.controls['fromdate'].invalid && (reportform.controls['fromdate'].dirty || reportform.controls['fromdate'].touched)" >
+                                <div *ngIf="reportform.controls['fromdate'].errors.required" style="color: red;">From Date Required*</div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                           <h6><strong>End Date</strong><span class="text-danger">*</span></h6>
+                            <div class="controls">
+                                <input type="text"  [minDate]="reportform.value.todate" 
+                                    placeholder="Select the Date" class="form-control" formControlName="todate" bsDatepicker>
+                            </div>
+                            <div *ngIf="reportform.controls['todate'].invalid && (reportform.controls['todate'].dirty || reportform.controls['todate'].touched)" >
+                                <div *ngIf="reportform.controls['todate'].errors.required" style="color: red;">To Date Required*</div>
+                                </div>
+                        </div>
+                    </div>
+                        
+                        
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Depot Name</strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select name="select" id="depotselect" class="form-control" formControlName="depotname"
+                                        (change)="getproductlistfordepot($event.target.value)" >
+                                        <option value="" disabled selected>Select Depot Name</option>
+
+                                        <option [value]=c.DEPOT_ID *ngFor="let c of collection.data" >{{c.DEPOT_NAME}}</option>
+                                        </select>
+                                </div>
+                                <div *ngIf="reportform.controls['depotname'].invalid && (reportform.controls['depotname'].dirty || reportform.controls['depotname'].touched)" >
+                                    <div *ngIf="reportform.controls['depotname'].errors.required" style="color: red;">Depot Name Required*</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                   <h6><strong>Product Name</strong><span class="text-danger">*</span></h6>
+                                   <div class="controls">
+                                    <select name="products" id="select" required class="form-control" formControlName="productid">
+                                        (ngModelChange)="onProductChanged()"  (change)="showgraph($event.target.value)" [(ngModel)]="products">
+                                        <option value="" disabled selected>Select Product Name</option>
+                                        <option value="all">All</option>
+                                        <option [value]=c.productid *ngFor="let c of productlist" >{{c.productname}}</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="reportform.controls['productid'].invalid && (reportform.controls['productid'].dirty || reportform.controls['productid'].touched)" >
+                                    <div *ngIf="reportform.controls['productid'].errors.required" style="color: red;">Product Name Required*</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button-box d-flex justify-content-center" style="flex: 1;">
+                                <button type="button" class="btn btn-info" [disabled]="reportform.invalid" (click)="onSubmit(reportform)">Submit</button> 
+                            </div>
+
+                        </div>
+                       
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div *ngIf="checkLoading==1" class="row">
+    <div class="col-lg-6 col-md-12" *ngFor="let key of linechartDataArray | keyvalue; index as i ">
+        <div class="card">
+            <div class="card-header bg-info text-white text-center">
+                Actual Sales vs Forecast - {{ key.key }} 
+                <div class="float-right">
+                    <div class="btn-group" dropdown #dropdown="bs-dropdown" [autoClose]="true">
+                        <button dropdownToggle type="button" class="btn btn-info text-white">
+                            <i class="fas fa-download"></i>
+                        </button>
+                       
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="downloadPng(key.key,$event, i)">PNG</a></li>
+                            <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="downloadJpg(key.key,$event, i)">JPEG</a></li>
+                            <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="downloadPdf(key.key,$event, i)">PDF</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div>
+                    <div *ngIf="checkLoading==1">
+                        <div
+                          style="display: block; margin-bottom: 75px;"
+                        >
+                      
+                       
+                            <canvas
+                            baseChart
+                            [datasets]="key.value.data"
+                            [labels]="key.value.label"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            [plugins]="lineChartPlugins"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)"
+                          >
+                          </canvas>  
+                        </div>
+                      </div>
+                     
+                </div>
+                <table class="table table-bordered">
+                    <thead class="bg-info text-white">
+                    <tr> 
+                        <th>Date</th>
+                        <th>Forecast</th>
+                        <th>Actual</th>
+                        <th>Variance %</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                       
+                            <tr *ngFor ="let row of forSaleChart[key.key]">
+
+                                <td>{{row.date | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{row.forcast | number : '1.2-2'}}</td>
+                                <td>{{row.Actual | number : '1.2-2'}}</td>
+                                <td>{{row.VARIANCE_BY_PERCENTAGE | number : '1.2-2'}}%</td>
+                            </tr>
+                        
+                    </tbody>
+                </table> 
+            </div>
+        </div>
+    </div>  
+</div>
+<div *ngIf="checkLoading==2" class="row">
+    <div class="col-lg-12 col-md-6">
+    <div class="card">
+    <div class="flexRow center-center"><h2>No Data</h2></div> 
+    </div>
+    </div>
+</div>
+
+<div class="row forecast-tabel">
+    <div class="col-lg-12 col-md-6">
+        <div class="card">
+         
+            <div *ngIf="showTable==1" class="example-container mat-elevation-z8 m-t-50" #TABLE>
+                <table mat-table #mytable [dataSource]="dataSource  |   filter:searchText " id="forecasttable" (matSortChange)="sortData($event)" matSort>
+                  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns"  >  
+                    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mattable hide-arrow">
+                      <span *ngIf="keyToExclude.includes(column)" >
+                        <span *ngIf="column === 'Week'">Week</span>
+                      <span *ngIf="column === 'Date'">From Date</span>
+                      <span *ngIf="column === 'To'">To Date</span>
+                    </span> 
+                     <span *ngIf="column.includes('Total')">{{column}}</span> 
+                      <span *ngIf="column && !keyToExclude.includes(column) && !column.includes('Total') && (column.split('_').length > 0)">{{column.split('_')[2]}}</span> 
+                    
+                    </th>
+                    
+                    
+                      <td mat-cell *matCellDef="let row"  >
+                        <span *ngIf="column.includes('Actual')">{{row[column] | number:'1.0':'en-US'}}</span>
+                          <span *ngIf="!column.includes('Actual') && !column.includes('PercentVarience')">{{row[column]}}</span>
+                          <span *ngIf="column.includes('PercentVarience')">{{row[column]}}%</span>
+                        </td>
+                  </ng-container>
+                  
+
+                  
+                  <ng-container [matColumnDef]="header" *ngFor="let header of primryHeader"   > 
+                    <ng-container *ngIf="header === 'date'">
+                      <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" class="mattable hide-arrow center" ></th>
+                      </ng-container>
+                      <ng-container *ngIf="header !== 'date'">
+                        <th mat-header-cell *matHeaderCellDef [attr.colspan]="primaryHeaderAllOption[header]" class="mattable hide-arrow center" >
+                          <span *ngIf="header !== 'Total'">Depot - </span>{{header}}
+                        </th>
+                      </ng-container>
+                  </ng-container>
+
+                  <ng-container [matColumnDef]="header" *ngFor="let header of productHeaderAllOption" > 
+                    <ng-container *ngIf="header === 'dummy' ">
+                      <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" class="mattable hide-arrow center" ></th>
+                      </ng-container>
+                      <ng-container *ngIf="header !== 'dummy' ">
+                        <th mat-header-cell *matHeaderCellDef [attr.colspan]="4" class="mattable hide-arrow center" >
+                          <span *ngIf="header !== 'Total'">Product - </span>{{header.split('_')[1]}}
+                        </th>
+                      </ng-container>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                      <span class="headingFont"> No Records Found </span> 
+                    </mat-footer-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                      Loading, please wait...
+                    </mat-footer-cell>
+                  </ng-container>
+
+            
+
+                     <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="primryHeader; sticky: true"></tr>
+                     <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="productHeaderAllOption; sticky: true"></tr>
+                   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                  
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                  <mat-footer-row *matFooterRowDef="['noData']" [hidden]="tableLoading || (dataSource && dataSource.length > 0)"></mat-footer-row>
+                   <mat-footer-row *matFooterRowDef="['loading']" [hidden]="!tableLoading"></mat-footer-row>
+                   
+                   
+                </table>
+              </div> 
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Add Data</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center">
+                    <form [formGroup]="reportform1" class="m-t-12" novalidate autocomplete="off">
+                   <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <h6><strong>Start Date</strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text"  (bsValueChange)="emptyValue1($event)"
+                                            placeholder="Select the Date" class="form-control" formControlName="fromdte" bsDatepicker>
+                                    </div>
+                                    <div *ngIf="reportform1.controls['fromdte'].invalid && (reportform1.controls['fromdte'].dirty || reportform1.controls['fromdte'].touched)" >
+                                        <div *ngIf="reportform1.controls['fromdte'].errors.required" style="color: red;">From Date Required*</div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                   <h6><strong>End Date</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text"  [minDate]="reportform1.value.fromdte" 
+                                            placeholder="Select the Date" class="form-control" formControlName="todte" bsDatepicker>
+                                    </div>
+                                    <div *ngIf="reportform1.controls['todte'].invalid && (reportform1.controls['todte'].dirty || reportform1.controls['todte'].touched)" >
+                                        <div *ngIf="reportform1.controls['todte'].errors.required" style="color: red;">To Date Required*</div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                            <div class="button-box submit">
+                                <button type="button" class="btn btn-info" [disabled]="reportform1.invalid" (click)="onSubmitOne(reportform1)">Submit</button> 
+                            </div>
+                            </div>
+
+                        </div>                                            
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+  
+<div class="row" *ngIf="checkLoadingOne==1">
+    <div class="col-lg-8 col-md-12">
+        <div class="card">
+
+            <div class="card-body">
+                 <h4 class="card-title"><span class="lstick"></span>
+                    Product Overview
+                    <!-- <i class="fas fa-exchange-alt text-info float-right" (click)="randomize()"></i> -->
+                </h4> 
+
+                <div>
+                    <div>
+                        <div>
+                            <div *ngIf="barChartData?.length > 0" style="display: block">
+                                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                    [options]="barChartOptions" [legend]="barChartLegend"
+                                    [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
+                            </div>
+                            <!-- <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button> -->
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <table class="table vm font-14">
+                    <tr>
+                        <th class="b-0">Sales Product </th>
+                        <!-- <th class="text-center font-medium b-0">Year</th> -->
+                        <th class="text-right font-medium b-0">Sales</th>
+                    </tr>
+                    <tr *ngFor="let barData of productViewTable; index as i">
+                        <td class="b-0">{{barData.label}}</td>
+                        <!-- <td class="text-center font-medium b-0">{{barData.date}}</td> -->
+                        <td class="text-right font-medium b-0">{{barData.actual}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+    <div class="col-lg-4 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title m-b-5"><span class="lstick"></span>Sales Overview </h3>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <div style="display: block" *ngIf="doughnutChartData?.length > 0">
+                                <canvas baseChart width="200" height="200"
+                                    (chartClick)="chartDognutClicked($event)"
+                                    (chartHover)="chartDognutHovered($event)" [data]="doughnutChartData"
+                                    [labels]="doughnutChartLabels" [options]="doughnutChartOption"
+                                    [chartType]="doughnutChartType">
+                                </canvas>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table vm font-14">
+
+                    <tr *ngFor="let sale of saleOverViewTable">
+                        <td class="b-0">{{sale.label}}</td>
+                        <td class="text-right font-medium b-0">{{sale.data}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4 class="m-b-0 text-white">Edit Weekly Forecast</h4>
+      </div>
+      <div class="card-body">
+        <div class="col-md-12 align-self-center">
+          <form name="form" (ngSubmit)="f.form.valid && validateforecast(form)" #f="ngForm" autocomplete="off">
+
+            <div class="form-row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <h6><strong>Forecast Date</strong><span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="date" name="forecastdate" readonly="true" [(ngModel)]="forecast.forecastdate"
+                      class="form-control"> </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <h6><strong>Depot Name</strong> <span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="depotname" [(ngModel)]="forecast.depotname" readonly="true"
+                      class="form-control"> </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body" >
+                <h4 class="card-title"><strong>Edit Weekly Forecast Data</strong> </h4>
+                <div class="row">
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Forecast Version</strong></h6>
+                  </div>
+               <!--    <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Forecast Date</strong></h6>
+                  </div> -->
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>weekstartDate</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white"><strong>weekEndDate</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>WeekNum</strong></h6>
+                  </div>
+
+                  <div *ngFor="let p of selectedProductList[0]" class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white">
+                      <strong style="font-size:12px">{{p.PRODUCT_NAME}}</strong>
+                    </h6>
+                  </div>
+
+                </div>
+
+                <div class="row" *ngFor="let f of forecastweekvalue;let i = index">
+
+                  <div class="col  bg-light border p-2 ">
+                    <input type="hidden" class="form-control" size='50' [name]='f.FORECAST_VERSION'
+                      [(ngModel)]="f.FORECAST_VERSION" readonly="true">
+                      <span><pre>{{f.FORECAST_VERSION}}</pre></span>                  </div>
+
+              <!--     <div class="col  bg-light border p-2 "  *ngIf="i=='0'">
+                    <input type="text" class="form-control" size='50' [name]='f.WEEK_START1' [(ngModel)]="f.WEEK_START"
+                      readonly="true"  [ngModelOptions]="{standalone: true}">
+                  </div>
+
+
+                  <div class="col  bg-light border p-2 "  *ngIf="!i=='0'">
+                    <input type="text" class="form-control" size='50' [name]='forecast.date' [(ngModel)]="forecast.date"
+                      readonly="true" [ngModelOptions]="{standalone: true}">
+                  </div> -->
+
+                  <div class="col  bg-light border p-2 ">
+                    <input type="hidden" class="form-control" size='50' [name]='f.WEEK_START' [(ngModel)]="f.WEEK_START"
+                      readonly="true" >
+                      <span><pre>{{f.WEEK_START | date :  "dd-MM-yyyy"}}</pre></span>                 
+
+                  </div>
+                  <div class="col  bg-light border p-2 ">
+                    <input type="hidden" class="form-control" size='50' [name]='f.WEEK_END' [(ngModel)]="f.WEEK_END"
+                      readonly="true">
+                      <span><pre>{{f.WEEK_END | date :  "dd-MM-yyyy"}}</pre></span>                 
+
+                  </div>
+                  <div class="col  bg-light border p-2 ">
+                    <input type="hidden" class="form-control" size='50' [name]='f.WEEK_NUM' [(ngModel)]="f.WEEK_NUM"
+                      readonly="true">
+                      <span><pre>{{f.WEEK_NUM}}</pre></span>                 
+
+
+                  </div>
+                  <div *ngFor="let p of selectedProductList[i] ;let j = index" class="col  bg-light border p-2 ">
+                    <input type="text" class="form-control" size='50'
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                      [name]='f.WEEK_NUM+p.PRODUCT_ID' [(ngModel)]="p.FORECAST_QUANTITY"
+                      >
+                  </div>
+
+                </div>
+
+
+
+
+              </div>
+              <div class="button-box text-center">
+                <button class="btn btn-danger" [routerLink]="'../forecastweek'"  [hidden]="mysubmit"  >Cancel</button>
+                <button class="btn btn-info" type="submit" [hidden]="mysubmit"  >Submit</button>
+                <span  style="color: red;">{{msg}}</span>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

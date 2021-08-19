@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Delete Tank</h4>
+            </div>
+            <div class="card-body">
+             <div class="table-responsive">
+                    <!--   <table class="table color-table info-table"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="bg-info m-b-0 text-white">
+                                <th>SL No</th>
+                                <th>DEPOT NAME</th>
+                                <th>PRODUCT NAME</th>
+                                <th>TANK NAME</th>
+                                <th>MAX VALUE</th>
+                                <th>MIN VALUE</th>
+                                <th>TANK STATUS </th>
+                             <!--    <th>STATUS </th> -->
+                                <th>ACTIONS </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let ullage of ullagelist ;let i = index">
+                                <td><strong> {{i + 1}}</strong></td>
+                                <td> <strong>{{ullage.DEPOT_NAME}}</strong></td>
+                                <td><strong>{{ullage.PRODUCT_NAME}}</strong></td>
+                                <td><strong>{{ullage.TANK_NAME}}</strong></td>
+                                <td><strong>{{ullage.MAX_VALUE}}</strong></td>
+                                <td><strong>{{ullage.MIN_VALUE}}</strong></td>
+                            <!--     <td><strong>{{ullage.STATUS}}</strong></td> -->
+                                <td><strong>{{ullage.REMARKS}}</strong></td>
+                                <!--  <a href="javascript:void(0)">
+                                                <td> <i  class="mdi mdi-delete" tooltip="Delete tank"
+                                                        (click)="DeleteTank(ullage)"></i></td>
+                                            </a> -->
+                                <td> <button class="btn btn-danger" (click)="DeleteTank(ullage)">Delete</button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="button-box text-center">
+                        <button class="btn btn-inverse" [routerLink]="'../ullage'">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

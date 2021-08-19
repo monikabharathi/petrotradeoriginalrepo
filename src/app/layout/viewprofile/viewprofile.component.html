@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-lg-12">
+       
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">View Profile</h4>
+        </div>
+            <div class="card-body">
+                
+                <div class="table-responsive">
+             
+                      <div class="card">
+                        <div *ngFor="let p of parentmenu.parent;let i=index">
+                          <div class="alert alert alert-success">
+                            <div class="custom-checkbox">
+                              <input type="checkbox" disabled [id]="p.PARENTID" [name]="p.PARENTID" [(ngModel)]="p.FLAG" readonly>
+                              <label [for]="p.PARENTID">{{p.PARENTNAME}}</label>
+                            </div>
+                          </div>
+                        <!--   <div *ngIf="p.FLAG === true">  -->
+                            <div *ngIf="true">
+                            <div class="sub-menu" *ngFor="let m of parentmenu.sub;let j=index">
+                              <div *ngIf="m.PARENTID===p.PARENTID">
+                                <div class="custom-checkbox sub-menu-header">
+                                  <input type="checkbox" disabled [id]="m.SUBMENUID" [name]="m.SUBMENUID" [(ngModel)]="m.FLAG" >
+                                  <label [for]="m.SUBMENUID">{{m.SUBMENUNAME}}</label>
+                                </div>
+                                <div class="chlid-menu">
+                                  <div *ngFor="let s of parentmenu.undersub;let k = index">
+                                    <div *ngIf="(s.SUBMENUID===m.SUBMENUID) && (m.PARENTID===p.PARENTID)">
+                                      <div class="custom-checkbox">
+                                        <input type="checkbox" disabled [id]="s.SUPERMENUID" [name]="s.SUPERMENUID" [(ngModel)]="s.FLAG">
+                                        <label [for]="s.SUPERMENUID">{{s.SUPERMENUNAME}}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="button-box text-center" >
+
+                            <button class="btn btn-inverse" [routerLink]="'../profile'">Back</button> 
+
+                                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

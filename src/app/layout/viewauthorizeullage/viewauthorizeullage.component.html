@@ -1,0 +1,47 @@
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">View Authorize Ullage</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                      
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="bg-info m-b-0 text-white">
+                                            <th>SL No</th>
+                                        <th>Depot Name</th>
+                                        <th>Product Name</th>
+                                        <th>Tank Name</th>
+                                        <th>Max Value</th>
+                                        <th>Min Value</th>
+                                        <th>Tank Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let ullage of ullagelist ;let i = index">
+                                        <td><strong> {{i + 1}}</strong></td>
+                                        <td> <strong>{{ullage.DEPOT_NAME}}</strong></td>
+                                        <td><strong>{{ullage.PRODUCT_NAME}}</strong></td>
+                                        <td><strong>{{ullage.TANK_NAME}}</strong></td>
+                                        <td><strong>{{ullage.MAX_VALUE}}</strong></td>
+                                        <td><strong>{{ullage.MIN_VALUE}}</strong></td>
+                                        <td><strong>{{ullage.STATUS}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="button-box text-center">
+                                <button class="btn btn-info" (click)="authroizeullage(ullagelist)">Authorize</button>
+                                <button class="btn btn-inverse" [routerLink]="'../ullage'">Cancel</button>
+                                <button class="btn btn-danger"   (click)="Deauthroizeullage(ullagelist)">De-Authorize</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <

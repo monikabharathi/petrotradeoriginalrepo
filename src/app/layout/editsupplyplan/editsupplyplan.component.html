@@ -1,0 +1,171 @@
+ <!-- <div class="page-wrapper">
+  <div class="container-fluid">
+     -->
+    
+    <!-- <div class="row page-titles">
+      <div class="col-md-12 align-self-center">
+        <h3 class="text-themecolor">SupplyPlan Details </h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+
+          <li class="breadcrumb-item"><a [routerLink]="'../dashboard'">Home</a></li>
+          <li class="breadcrumb-item">SPR</li>
+          <li class="breadcrumb-item active"><a [routerLink]="'../supplyplan'">Supply Plan</a></li>
+          <li class="breadcrumb-item active">Add Supply Plan</li>
+        </ol>
+      </div>
+    </div>
+ -->
+
+
+ <div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4  class="m-b-0 text-white">Edit Supply Plan</h4>
+      </div>
+    
+        <div class="col-md-12 align-self-center">
+
+          <form class="m-t-10" novalidate autocomplete="off">
+            <div class="form-row">
+
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <h6><strong>Date</strong><span class="text-danger">*</span></h6>
+                  <div class="controls">
+                
+                    <input type="text" placeholder="Select the Date"  class="form-control" [(ngModel)]="dateValue"
+                    
+                    [minDate]="systemDate" [maxDate]="systemDate" name="dateValue" (ngModelChange)="showOpeningBalance()" bsDatepicker >
+                    
+                  </div>
+                  <!-- [minDate]="systemDate" [maxDate]="systemDate" -->
+                   <div *ngIf="checkDate==1"><span style="color: red;">Please Select a Date</span></div>  
+                 
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <h6><strong>Depot Name</strong> <span class="text-danger">*</span></h6>
+                  <div class="controls" >
+                    <select name="select" id="select"  placeholder="Select the Depot" [(ngModel)]="depotValue" name="depotValue"
+                     (change)="showOpeningBalance()" required class="form-control">
+                     <option *ngIf="!depotNames.length">No Depot</option>
+                       <option *ngFor="let depot of depotNames" value="{{depot.DEPOT_ID}}">{{depot.DEPOT_NAME}}</option>    
+                     </select>
+                  </div>
+                 
+                
+                </div>
+              </div>
+             
+            </div>
+
+
+
+
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- <div class="card"> -->
+                        <!-- <div class="card-body"> -->
+                            <div *ngIf="rowNum!=='' && rowNum!==undefined">
+
+                       <div *ngIf="checkLoading==1" class="flexRow"><h2>Loading, Please Wait...</h2></div>              
+                       <div *ngIf="showTable" class="example-container mat-elevation-z8 m-t-50" #TABLE>
+                        <table *ngIf="showTable" mat-table #mytable [dataSource]="dataSource  |   filter:searchText " id="forecasttable" (matSortChange)="sortData($event)" matSort>
+                         <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i" [sticky]="isSticky(column)" > 
+                           
+                            <ng-container >
+                              <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mattable hide-arrow" >
+                                <span *ngIf="column === 'Date'" >{{column}}</span>
+                                <span *ngIf="column === 'WEEKDAY'" >WeekDay</span>
+
+                                <span *ngIf="column && column !== 'Date' && (column.split('_').length > 0) && !(column.split('_')[2]=='color')" >{{column.split('_')[2]}}</span> 
+                              </th>
+                                <td mat-cell *matCellDef="let row; index as j" [style.background-color]="getBackgroundColor(column,row[column],row['Date'],row)"> 
+                        
+                                   <span *ngIf="(column.split('_')[2]!='Opening') && (column.split('_')[2]!='SAFTEYDAYS') && (column.split('_')[2]!='WEEKDAY') && (column.split('_')[0]=='SupplyPlan' ) && !checkHasValue(row, column, 'flag')">
+                                    <input  type="text"   onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                                     name="name_{{row['Date']}}_{{i}}" #name_i type="text" size="6" height="6" [(ngModel)]="row[column]" [style.background-color]="(column.split('_')[0] == 'SupplyPlan') && row['SupplyPlan_'+column.split('_')[1]+'_color_'+column.split('_')[2]] " (change)="inputChange(row,column,row[column])">
+                                    </span>
+                                    <span *ngIf="(column.split('_')[2]=='Opening' || (column.split('_')[2]=='SAFTEYDAYS') || (column.split('_')[2]=='WEEKDAY') || !(column.split('_')[0]=='SupplyPlan') || (checkHasValue(row, column, 'flag'))) " >{{row[column]}}</span>
+                                  
+                                </td>
+                              </ng-container>
+                           </ng-container>
+                       
+                          <ng-container [matColumnDef]="header" *ngFor="let header of primaryHeaderPs" > 
+                            <ng-container *ngIf="header === 'date'">
+                              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" class="mattable hide-arrow center" ></th>
+                            </ng-container>
+                              <ng-container *ngIf="header !== 'date'">
+                                <th mat-header-cell *matHeaderCellDef [attr.colspan]="primaryHeaderLengthPs[header]" class="mattable hide-arrow center" >
+                                  {{header}}
+                                </th>
+                              </ng-container>
+                          </ng-container>
+
+                          <ng-container [matColumnDef]="header" *ngFor="let header of productHeaderPs" > 
+                            <ng-container *ngIf="header === 'dummyDate'">
+                              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" class="mattable hide-arrow center" ></th>
+                            </ng-container>
+                              <ng-container *ngIf="header !== 'dummyDate'">
+                                <th mat-header-cell *matHeaderCellDef [attr.colspan]="productHeaderLengthPs[header]" class="mattable hide-arrow center" >
+                                  <span *ngIf="(header.split('_').length > 0)">{{header.split('_')[1]}}</span> 
+                                </th>
+                              </ng-container>
+                          </ng-container>
+
+                          <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                              Loading, please wait...
+                            </mat-footer-cell>
+                          </ng-container>
+
+                            <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="primaryHeaderPs;  sticky: true"></tr>
+                            <tr mat-header-row [hidden]="!dataSource.length" *matHeaderRowDef="productHeaderPs;  sticky: true"></tr>
+                           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                           <mat-footer-row *matFooterRowDef="['loading']" [hidden]="!tableLoading"></mat-footer-row>
+                        </table>
+                      </div> 
+
+                     
+                      <div *ngIf="showTable" class="flexRow center-center">
+                        {{msg}}
+                             <div class="m8">
+                               <button  mat-raised-button class="btn btn-info" (click)="onSubmit()" [hidden]="issubmit || !dataSource.length">Submit</button>
+                             </div>
+                             <div class="m8" >
+                               <button  mat-raised-button class="btn btn-info"  (click)="onBack()" [hidden]="issubmit">Back</button>
+                             </div> 
+                         </div>
+                                
+                         
+                          </div>
+                          
+                        <!-- </div>  (click)="onBack()" -->
+    
+    
+                    <!-- </div> -->
+                </div>
+            </div>
+            
+            
+
+          </form>
+
+        </div>
+        
+      
+
+      
+    </div>
+  </div>
+</div>
+<!--  </div>
+
+</div> -->

@@ -1,0 +1,156 @@
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">Edit Product</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12 align-self-center">
+
+                            <form name="form" (ngSubmit)="f.form.valid && validateProduct(form)" #f="ngForm"
+                                autocomplete="off">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Product Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Product Name" class="form-control"
+                                                    name="productname" [(ngModel)]="product.productname"
+                                                    #productname="ngModel"
+                                                    onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && productname.invalid }"
+                                                    required />
+                                                <div *ngIf="f.submitted && productname.invalid"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="productname.errors.required">ProductName Is Required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Product ID</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Product ID" readonly='true'
+                                                    class="form-control" name="productid" [(ngModel)]="product.productid"
+                                                    #productid="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && productid.invalid }"
+                                                    onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                                    required />
+                                                <div *ngIf="f.submitted && productid.invalid" class="invalid-feedback">
+                                                    <div *ngIf="productid.errors.required">ProductId Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+
+                                    <!-- <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Depot Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <ng-multiselect-dropdown [placeholder]="'Depot List'" [data]="depotlist"
+                                                    [(ngModel)]="selectedDepotList" [settings]="dropdownSettings"
+                                                    (onSelect)="onItemSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)" name="depotlist"
+                                                    
+                                                    #depotlist="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && depotlist.invalid }" 
+                                                    required
+                                                        />
+                                                </ng-multiselect-dropdown>
+                                                <div *ngIf="f.submitted && depotlist.invalid" class="invalid-feedback">
+                                                    <div *ngIf="depotlist.errors.required">depotname Is Required</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div> -->
+
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Depot Name</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <ng-multiselect-dropdown [placeholder]="'Depot List'" [data]="depotlist"
+                                                    [(ngModel)]="selectedDepotList" [settings]="dropdownSettings"
+                                                    (onSelect)="onItemSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)" name="depotname"
+                                                    #depotname="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }" 
+                                                    required>
+                                                </ng-multiselect-dropdown>
+                                                <div *ngIf="f.submitted && depotname.invalid" class="invalid-feedback">
+                                                    <div *ngIf="depotname.errors.required">depotname Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>units </strong> <span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <select id="select" placeholder="select Units" name="units"
+                                                    [(ngModel)]="product.units" #units="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && units.invalid }" required
+                                                    class="form-control">
+                                                    <option value="" disabled selected>Select Units </option>
+                                                    <option value="{{c.unit_id}}" *ngFor="let c of unitlist">
+                                                        {{c.unit_name}}</option>
+
+                                                </select>
+                                                <div *ngIf="f.submitted && units.invalid" class="invalid-feedback">
+                                                    <div *ngIf="units.errors.required">units Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Product Description</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Product Description" 
+                                                  class="form-control"
+                                                    name="productdescription." [(ngModel)]="product.productdescription"
+                                                    #productdescription="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && productdescription.invalid }"
+                                                    onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                                    required />
+                                                <div *ngIf="f.submitted && productdescription.invalid"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="productdescription.errors.required">ProductDescription Is Required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button-box text-center">
+                                    <button class="btn btn-danger" [routerLink]="'../product'">Cancel</button>
+                                    <button class="btn btn-info" type="submit" [hidden]="mysubmit">Submit</button>
+                            
+                                   
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+  

@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4 class="m-b-0 text-white">View Weekly Forecast</h4>
+      </div>
+      <div class="card-body">
+        <div class="col-md-12 align-self-center">
+          <form class="m-t-10" novalidate>
+            <div class="form-row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <h6><strong>Forecast Date</strong><span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="date" name="forecastdate" readonly="true" [(ngModel)]="forecast.forecastdate"
+                      class="form-control"> </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <h6><strong>Depot Name</strong> <span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="depotname" [(ngModel)]="forecast.depotname" readonly="true"
+                      class="form-control"> </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="card" >
+              <div class="card-body">
+                <h4 class="card-title"><strong>View pervious Forecast Data</strong> </h4>
+                <div class="row">
+                  <div class="col bg-info border p-1 text-center">
+                    <h6 class=" text-white"><strong>Forecast Version</strong></h6>
+                  </div>
+            
+                  <div class="col bg-info border p-1 text-center">
+                    <h6 class=" text-white"><strong>weekstartDate</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-1 text-center ">
+                    <h6 class=" text-white"><strong>weekEndDate</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-1 text-center">
+                    <h6 class=" text-white"><strong>WeekNum</strong></h6>
+                  </div>
+                  <div *ngFor="let p of selectedProductList[0]" class="col bg-info border p-1 text-center ">
+                    <h6 class=" text-white"> <strong>{{p.PRODUCT_NAME}}</strong></h6>
+                    </div>
+                </div>
+            
+                <div class="row" *ngFor="let p of forecastweekvalue;let i = index">
+                  <div class="col  bg-light border p-1 text-center" name='version'> <span><pre>{{p.FORECAST_VERSION}}</pre></span></div>
+                   <div class="col  bg-light border p-1 text-center" name='weekstart'><span><pre>{{p.WEEK_START | date :  "dd-MM-yyyy"}}</pre></span></div>
+                  <div class="col  bg-light border p-1 text-center" name='weekend'><span><pre>{{p.WEEK_END | date :  "dd-MM-yyyy"}}</pre></span></div>
+                  <div class="col  bg-light border p-1 text-center" name='weeknum'> <span><pre>{{p.WEEK_NUM}}</pre></span></div>
+                  <div *ngFor="let l of selectedProductList[i]" class="col  bg-light border p-1 text-center"
+                    name='{{p.WEEK_NUM+l.PRODUCT_NAME}}'><span><pre>{{Number(l.FORECAST_QUANTITY)|currency:"LAK":''}}</pre></span></div>
+                 </div>
+              </div>
+             
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- bacupu -->
+
+
+<!-- 
+
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title"><strong>View Weekly Forecast Data</strong> </h4>
+    <div class="row">
+      <div class="col bg-info border p-1 text-center">
+        <h6 class=" text-white"><strong>Forecast Version</strong></h6>
+      </div>
+
+      <div class="col bg-info border p-1 text-center">
+        <h6 class=" text-white"><strong>weekstartDate</strong></h6>
+      </div>
+      <div class="col bg-info border p-1 text-center ">
+        <h6 class=" text-white"><strong>weekEndDate</strong></h6>
+      </div>
+      <div class="col bg-info border p-1 text-center">
+        <h6 class=" text-white"><strong>WeekNum</strong></h6>
+      </div>
+      <div *ngFor="let p of selectedProductList[0]" class="col bg-info border p-1 text-center ">
+        <h6 class=" text-white"> <strong >{{p.PRODUCT_NAME}}</strong> </h6>
+        </div>
+    </div>
+
+    <div class="row" *ngFor="let p of forecastweekvalue;let i = index">
+      <div class="col  bg-light border p-1 text-center" name='version'>{{p.FORECAST_VERSION}}</div>
+ 
+      <div class="col  bg-light border p-1 text-center" name='weekstart'>{{p.WEEK_START}}</div>
+      <div class="col  bg-light border p-1 text-center" name='weekend'>{{p.WEEK_END}}</div>
+      <div class="col  bg-light border p-1 text-center" name='weeknum'>{{p.WEEK_NUM}}</div>
+      <div *ngFor="let l of selectedProductList[i]" class="col  bg-light border p-1 text-center"
+        name='{{p.WEEK_NUM+l.PRODUCT_NAME}}'>  {{l.FORECAST_QUANTITY}}</div>
+     </div>
+  </div>
+  <div class="button-box text-center">
+    <button class="btn btn-inverse" [routerLink]="'../forecastweek'">Back</button>
+  </div>
+</div> -->

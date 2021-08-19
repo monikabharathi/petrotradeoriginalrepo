@@ -1,0 +1,326 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Add New User</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center">
+                    <form name="form" (ngSubmit)="f.form.valid && addUser(form)" #f="ngForm" autocomplete="off">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <h6><strong>User Name</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="User Name" class="form-control"
+                                            name="username"
+                                            [(ngModel)]="user.username" (blur)="checkusername($event.target.value)"
+                                            #username="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && username.invalid }"
+                                            onkeypress="return event.charCode >= 65 && event.charCode <= 90||event.charCode >= 97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                            maxlength="15"  required />
+                                        <div *ngIf="f.submitted && username.invalid" class="invalid-feedback">
+                                            <div *ngIf="username.errors.required">User Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         <!--    <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>User Type </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select id="usertype" placeholder="select User Type" name="usertype"
+                                            [(ngModel)]="user.usertype" #usertype="ngModel"
+                                            (blur)="UserType($event.target.value)"
+                                            [ngClass]="{ 'is-invalid': f.submitted && usertype.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" selected disabled>Select User Type</option>
+                                          
+                                            <option value="B">Default</option> 
+                                        </select>
+                                        <div *ngIf="f.submitted && usertype.invalid" class="invalid-feedback">
+                                            <div *ngIf="usertype.errors.required">User Type Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                                                                        <!--    <option value="" disabled selected>Select User Type</option> -->
+  <!-- <option value="M">Maker Type</option>
+                                            <option value="C">Checker Type</option> -->
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>First Name</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="First Name" class="form-control"
+                                            name="firstname" [(ngModel)]="user.firstname" #firstname="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && firstname.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >= 97 && event.charCode <= 122"
+                                            maxlength="25" required />
+                                        <div *ngIf="f.submitted && firstname.invalid" class="invalid-feedback">
+                                            <div *ngIf="firstname.errors.required">First Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Last Name</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Last Name" class="form-control" name="lastname"
+                                            [(ngModel)]="user.lastname" #lastname="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && lastname.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >= 97 && event.charCode <= 122"
+                                            maxlength="25"    required />
+                                        <div *ngIf="f.submitted && lastname.invalid" class="invalid-feedback">
+                                            <div *ngIf="lastname.errors.required">Last Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Profile </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select id="profile" placeholder="select Profile Type" name="profiletype"
+                                            [(ngModel)]="user.profile" #profiletype="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && profiletype.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" selected disabled>Select Profile Type</option>
+                                            <option value="{{c.profileid }}" *ngFor="let c of profileListData">
+                                                {{c.profilename}}</option>
+
+                                        </select>
+                                        <div *ngIf="f.submitted && profiletype.invalid" class="invalid-feedback">
+                                            <div *ngIf="profiletype.errors.required"> Profile Type Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Department</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Department" class="form-control"
+                                            name="department" [(ngModel)]="user.department" #department="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && department.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                            maxlength="25" required />
+                                        <div *ngIf="f.submitted && department.invalid" class="invalid-feedback">
+                                            <div *ngIf="department.errors.required">Department Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                           <!--  <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong> DOB</strong><span class="text-danger"></span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Select the Dob" class="form-control" name="dob"
+                                            [(ngModel)]="user.dob" readonly="true" #dob="ngModel" bsDatepicker
+                                            [bsConfig]="{ dateInputFormat:'DD-MM-YYYY' }">
+                                        <div *ngIf="f.submitted && dob.invalid" class="invalid-feedback">
+                                            <div *ngIf="dob.errors.required">DOB Is Required
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Mobile No</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Mobile Number" class="form-control"
+                                            name="mobile" [(ngModel)]="user.mobile" #mobile="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }"
+                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                            maxlength="10" required />
+                                        <div *ngIf="f.submitted && mobile.invalid" class="invalid-feedback">
+                                            <div *ngIf="mobile.errors.required">Mobile Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Mail</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Mail" class="form-control" name="gmail"
+                                            [(ngModel)]="user.gmail" #gmail="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && gmail.invalid }" required
+                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{3,4}$" />
+                                        <div [hidden]="!gmail.errors?.pattern">
+                                            <p style="color:red;">Invalid Email Address</p>
+                                        </div>
+                                        <div *ngIf="f.submitted && gmail.invalid" class="invalid-feedback">
+                                            <div *ngIf="gmail.errors.required">Email Is Required</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>City</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="City" class="form-control"
+                                           name="city"
+                                            [(ngModel)]="user.city" #city="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && city.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                            required  maxlength="25"/>
+                                        <div *ngIf="f.submitted && city.invalid" class="invalid-feedback">
+                                            <div *ngIf="city.errors.required">City Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          <!--   <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Address</strong></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Address" class="form-control"
+                                          name="address" [(ngModel)]="user.address" #address="ngModel"
+                                          maxlength="50" />
+                                        <div *ngIf="f.submitted && address.invalid" class="invalid-feedback">
+                                            <div *ngIf="address.errors.required">Address Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+
+
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Office Location</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Office Location" class="form-control"
+                                            name="officelocation" [(ngModel)]="user.officelocation"
+                                            #officelocation="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && officelocation.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                            maxlength="25"   required />
+                                        <div *ngIf="f.submitted && officelocation.invalid" class="invalid-feedback">
+                                            <div *ngIf="officelocation.errors.required">Office Location Is Required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Country </strong> <span class="text-danger"></span></h6>
+                                    <div class="controls">
+                                        <select id="country" placeholder="select Profile Type" name="country"
+                                            [(ngModel)]="user.country" #country="ngModel" class="form-control">
+                                            <option value="undefined" selected disabled>Select Country</option>
+                                            <option value="INDIA">INDIA</option>
+                                            <option value="LAO">LAO</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && country.invalid" class="invalid-feedback">
+                                            <div *ngIf="country.errors.required">Country Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Company Name </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select id="Company" placeholder="select Company Name" name="companyname"
+                                            [(ngModel)]="user.companyname" #companyname="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && companyname.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" selected disabled>Select Company Name</option>
+                                            <option value="INDIA">Company 1</option>
+                                            <option value="LAO">Company 2</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && companyname.invalid" class="invalid-feedback">
+                                            <div *ngIf="companyname.errors.required">Company Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Title</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Title" class="form-control" name="title"
+                                            [(ngModel)]="user.title" #title="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && title.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                            maxlength="25" required />
+                                        <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                                            <div *ngIf="title.errors.required">Title Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Employee Number</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Employee Number" class="form-control"
+                                            name="employeename" [(ngModel)]="user.employeename" #employeename="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && employeename.invalid }"
+                                            onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                            maxlength="25" required />
+                                        <div *ngIf="f.submitted && employeename.invalid" class="invalid-feedback">
+                                            <div *ngIf="employeename.errors.required">Employee Number Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="row">
+
+                           
+                           
+                        </div> -->
+
+                        <div class="button-box text-center">
+                            <button class="btn btn-danger" [routerLink]="'../user'">Cancel</button>
+                            <button class="btn btn-info" type="submit" [hidden]="mysubmit">Submit</button>
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

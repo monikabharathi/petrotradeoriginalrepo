@@ -1,0 +1,17 @@
+.flexRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    margin: 20px 0px ;
+  }
+
+  .m10{
+    margin: 10px;
+  }
+
+  .btn {
+    padding: 7px 50px !important;
+    margin: 8px !important;
+    font-weight: 600;
+    cursor: pointer;
+}

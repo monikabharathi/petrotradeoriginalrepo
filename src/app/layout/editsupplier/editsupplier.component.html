@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Link New Supplier</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center">
+                    <form name="form" (ngSubmit)="f.form.valid && validatelinkSupplier(form)" #f="ngForm"
+                        autocomplete="off">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Supplier Name </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Supplier Name" class="form-control" name="suppliername" readonly='true'
+                                          [(ngModel)]="model.suppliername" #suppliername="ngModel"
+                                          onkeypress="return event.charCode == 32 || event.charCode >= 65 && event.charCode <= 90||event.charCode >=97 && event.charCode <= 122||event.charCode >= 48 && event.charCode <= 57"
+                                          [ngClass]="{ 'is-invalid': f.submitted && suppliername.invalid }"
+                                          required />
+                                        <div *ngIf="f.submitted && suppliername.invalid" class="invalid-feedback">
+                                          <div *ngIf="suppliername.errors.required">suppliername is Required</div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Depot Name </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Depot Name" class="form-control" name="depotname" readonly='true'
+                                          [(ngModel)]="model.depotname" readonly="true"
+                                         />
+                                       
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title"><strong>Edit Lead Time</strong> </h4>
+                                <div class="row">
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Product Name</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Lead Time</strong></h6>
+                                    </div>
+
+                                </div>
+
+                                <div class="row" *ngFor="let p of supplierlistedit;let i = index">
+
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" readonly="true" class="form-control" [name]='p.PRODUCT_NAME'
+                                            size='5' [(ngModel)]="p.PRODUCT_NAME">
+                                    </div>
+                                    <div class="col  bg-light border p-2 ">
+                                        <select id="leadtime" placeholder="select Lead Time" [name]="p.LEAD_TIME"
+                                            [(ngModel)]="p.LEAD_TIME" #leadtime="ngModel"
+                                            required (input)='editproduct(p.PRODUCT_ID)'
+                                            class="form-control">
+
+                                         <!--    [ngClass]="{ 'is-invalid': f.submitted && leadtime.invalid }" -->
+
+                                            <option value="undefined" selected disabled>Select Lead Time</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                        </select>
+                                       <!--  <div *ngIf="f.submitted && leadtime.invalid" class="invalid-feedback">
+                                            <div *ngIf="leadtime.errors.required">Lead Time Is Required</div>
+                                        </div> -->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-box text-center">
+                            <button class="btn btn-danger" [routerLink]="'../supplier'">Cancel</button>
+                            <button class="btn btn-info" type="submit" [hidden]="ishide">Submit</button>
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>

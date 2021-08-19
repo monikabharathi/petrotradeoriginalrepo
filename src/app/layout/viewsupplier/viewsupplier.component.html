@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">View Supplier</h4>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="bg-info m-b-0 text-white">
+                                <th>SUPPLIER NAME</th>
+                                <th>SUPPLIER ID</th>
+                                <th>DEPOT NAME</th>
+                                <th>PRODUCT NAME</th>
+                                <th>LEAD TIME</th>
+                            <!--     <th>STATUS</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let S of supplierlist">
+                                <td> <strong>{{S.SUPPLIER_NAME}}</strong></td>
+                                <td><strong>{{S.SUPPLIER_ID}}</strong></td>
+                                <td><strong>{{S.DEPOT_NAME}}</strong></td>
+                                <td><strong>{{S.PRODUCT_NAME}}</strong></td>
+                                <td><strong>{{S.LEAD_TIME}}</strong></td>
+                            <!--     <td><strong>{{S.REMARKS}}</strong></td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="button-box text-center">
+                        <button class="btn btn-inverse" [routerLink]="'../supplier'">Back</button>
+                    </div>
+                    <br>
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">Lead Time History</h4>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="bg-info m-b-0 text-white">
+                                            <th>SL NO</th>
+                                            <th>SUPPLIER NAME</th>
+                                            <th>DEPOT NAME</th>
+                                            <th>PRODUCT NAME</th>
+                                            <th>LEAD TIME</th>
+                                            <th> DATE </th>
+                                            <th>TIME</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let supplier of collection.data |paginate:config| filter:filter; let i = index ">
+                                            <td><strong>
+                                                    {{ (config.currentPage - 1) * config.itemsPerPage + i +1 }}</strong>
+                                            </td>
+                                            <td> <strong>{{supplier.SUPPLIER_NAME}}</strong></td>
+                                            <td><strong>{{supplier.DEPOT_NAME}}</strong></td>
+                                            <td><strong>{{supplier.PRODUCT_NAME}}</strong></td>
+                                            <td><strong>{{supplier.LEAD_TIME }}</strong></td>
+                                            <td><strong>{{supplier.CONFIG_DATE | date :  "dd-MM-yyyy"}}</strong></td>
+                                            <td><strong>{{supplier.CONFIG_TIME}}</strong></td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                                <div class="center">
+                                    <tr *ngIf="collection.data.length===0">
+                                        <td><strong>No Records found</strong></td>
+                                    </tr>
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="col-lg-3 col-md-12">
+                                                <input type="number" class="form-control" name="itemsPerPage"
+                                                    [(ngModel)]="config.itemsPerPage">
+                                            </div> -->
+                                    <div class="col-lg-12 col-md-12 ">
+                                        <pagination-controls class="float-right" (pageChange)="pageChanged($event)">
+                                        </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

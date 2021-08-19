@@ -1,0 +1,171 @@
+<ng-template #DeleteAlert>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Alert!!!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h4>Stock Already Configured For this Depot </h4>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="modalRef.hide()">ok</button>
+    </div>
+</ng-template>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Add New Bulk Stock</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center">
+                    <form name="form" (ngSubmit)="f.form.valid && validateBulkstock(form)" #f="ngForm"
+                        autocomplete="off">
+                   <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Depot Name </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select id="depotname" placeholder="Select depotname" name="depotname"
+                                            [(ngModel)]="bulkstock.depotname" #depotname="ngModel"
+                                            (input)="getproductlistfordepot($event.target.value)"
+                                            [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" disabled selected>Select Depot Name</option>
+                                            <option value="{{c.DEPOT_ID}}" *ngFor="let c of depotlist">
+                                                {{c.DEPOT_NAME}}</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && depotname.invalid" class="invalid-feedback">
+                                            <div *ngIf="depotname.errors.required">Depot Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!--   [minDate]="minDate"
+                                                    [maxDate]="maxDate"   (bsValueChange)="Bulkstockdate($event) " [minDate]="minDate" [maxDate]="maxDate"  -->
+
+                                    <h6><strong> Date</strong><span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Select the Date" class="form-control"
+                                            name="bulkstockDateValue" [(ngModel)]="bulkstock.bulkstockDateValue"
+                                            #bulkstockDateValue="ngModel" readonly="true"
+                                            (blur)="chageeventofcheckbox(p)"
+                                            [ngClass]="{ 'is-invalid': f.submitted && bulkstockDateValue.invalid }"
+                                            required bsDatepicker  [maxDate]="maxDate"
+                                            [bsConfig]="{ dateInputFormat:'DD-MM-YYYY' }">
+                                        <div *ngIf="f.submitted && bulkstockDateValue.invalid" class="invalid-feedback">
+                                            <div *ngIf="bulkstockDateValue.errors.required">Loaded Date Is
+                                                Required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title"><strong>Add Bulk Stock Data</strong> </h4>
+                                <div class="row">
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>select product</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Product Name</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Opening</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center ">
+                                        <h6 class=" text-white"><strong>Purchase</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Loaded</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center ">
+                                        <h6 class=" text-white"><strong>Transfer</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Closing</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Gl & Adj</strong></h6>
+                                    </div>
+                                </div>
+                         
+                         
+                                <div class="row" *ngFor="let p of productlist;let i = index;trackBy:trackByIdx">
+
+                                    <div  class="col  bg-light border p-2 " >
+                                       
+                                        <input type="checkbox" class="sub-menu"   [checked]="p.checkboxstatus"   [disabled]="p.flag"   (change)="checkBox(p,p.checkboxstatus,i,p.productid,DeleteAlert)" [(ngModel)]="p.checkboxstatus"  name='checkboxstatus{{i}}' 
+                                        
+                                        #loaded="ngModel" [ngClass]="{ 'is-invalid': f.submitted && loaded.invalid }" >
+                                    </div>
+
+                                    <div class="col  bg-light border p-2 ">
+                                       
+                                        <input type="hidden" readonly="true" class="form-control" [name]='p.productname'
+                                            size='10' [(ngModel)]="p.productname" [disabled]="!p.checkboxstatus">
+
+                                            <span><pre>{{p.productname}}</pre></span>
+                                    </div>
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text"  [(ngModel)]="p.openingbalance"   
+                                            name='openingbalance{{i}}'  class="form-control" size='10' (change)="glcalculation(p,i)"
+                                           onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                                             #openingbalance="ngModel"  readonly="true"  [disabled]="!p.checkboxstatus"    [ngClass]="{ 'is-invalid': f.submitted && openingbalance.invalid }" 
+                                              />
+                                    </div>
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" [(ngModel)]="p.purchase"  name='purchase{{i}}'  class="form-control" [disabled]="!p.checkboxstatus"
+                                            size='10' (change)="glcalculation(p,i)" 
+                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                                            #purchase="ngModel" [ngClass]="{ 'is-invalid': f.submitted && purchase.invalid }" 
+                                             [ngClass]="{ 'is-invalid': f.submitted && openingbalance.invalid }" 
+                                            />
+                                           
+                                    </div>
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" [(ngModel)]="p.loaded"  name='loaded{{i}}' class="form-control"
+                                            size='10' (change)="glcalculation(p,i)" [disabled]="!p.checkboxstatus"
+                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46" 
+                                            #loaded="ngModel" [ngClass]="{ 'is-invalid': f.submitted && loaded.invalid }"  />
+                                    </div>
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" [(ngModel)]="p.transfer" name='transfer{{i}}' class="form-control" [disabled]="!p.checkboxstatus"
+                                            size='10'  (change)="glcalculation(p,i)"
+                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46" 
+                                            #transfer="ngModel"  [ngClass]="{ 'is-invalid': f.submitted && transfer.invalid }" 
+                                             />   
+                                    </div>
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" [(ngModel)]="p.closing" ngvalue=0 name='closing{{i}}' class="form-control"
+                                            size='10'  (change)="glcalculation(p,i)" [disabled]="!p.checkboxstatus"
+                                           onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"  
+                                            #closing="ngModel" [ngClass]="{ 'is-invalid': f.submitted && closing.invalid }"  required />
+                                    </div>
+
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" [(ngModel)]="gl[i]" [name]="gl[i]"  [ngModelOptions]="{standalone: true}" class="form-control"
+                                            size='10' readonly="true" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        {{msg}}
+                        <div class="button-box text-center">
+                            <button class="btn btn-danger" [routerLink]="'../bulkstock'"  [hidden]="ishidecalcel" >Cancel</button>
+                            <button class="btn btn-info" type="submit" [hidden]="mysubmit" [disabled]="!f.form.valid">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>

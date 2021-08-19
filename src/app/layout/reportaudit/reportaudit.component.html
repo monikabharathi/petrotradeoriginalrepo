@@ -1,0 +1,266 @@
+<!-- <div class="page-wrapper">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Reports</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="['../dashboard']">Home</a></li>
+                    <li class="breadcrumb-item">Reports</li>
+                    <li class="breadcrumb-item active">Audit Report</li>
+                </ol>
+            </div>
+        </div>  -->
+       
+        
+         
+  <div class="row">
+      <div class="col-lg-12"> 
+         <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Audit Report</h4>
+            </div>
+            <br/>
+            <div class="card-body" style="padding-left: 20px;">
+            <div *ngIf="showTable=='false'"> 
+                <div class="flexRow">
+           <div > 
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="user" class="radio-button" type="radio" name="radio"  (change)="handleChange($event, reportform)" checked/>
+                            <div class="radio-tile" style="padding:16px 29px !important;">
+                        <label for="user" class="radio-tile-label">User Based</label>
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <input id="activity" class="radio-button" type="radio"  name="radio"  (change)="handleChange($event, reportform)" />
+                    <div class="radio-tile" style="padding:16px 29px !important;">
+                    <label for="activity" class="radio-tile-label">Activity Based</label>
+                  </div>
+                </div>
+            </div>
+             </div>
+                </div>
+            <br/>
+            <div id="form" *ngIf="flag"style="padding-top: 20px;">
+                <h2>Report Based on User Details</h2>
+                <br/>
+             <form [formGroup]="reportform" class="m-t-10"  autocomplete="off" novalidate>
+                <div class="form-group">
+                    <div class="controls">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button style="padding-left: 5px; padding-right: 80px;" value="1" (change)="userChange($event)" checked>User Name</mat-radio-button> &nbsp;
+                            <mat-radio-button value="2" (change)="userChange($event)">User ID</mat-radio-button>
+                          </mat-radio-group> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="controls">
+                        <mat-form-field style="width: 400px;" appearance="outline">
+                            <mat-label >{{user}}</mat-label>
+                            <span *ngIf="user!== 'User ID'"><input  matInput  formControlName="user" placeholder="Enter {{user}}"></span>
+                            <span *ngIf="user=== 'User ID'"><input  onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46" matInput  formControlName="user" placeholder="Enter {{user}}"></span>
+                         </mat-form-field>
+                    </div>
+                    <div *ngIf="reportform.controls['user'].invalid && (reportform.controls['user'].dirty || reportform.controls['user'].touched)" >
+                        <div *ngIf="reportform.controls['user'].errors.required" style="color: red;">{{user}} Required*</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-info" [disabled]="reportform.invalid" style="width: 400px; margin-bottom: 50px;  color: white;" mat-button (click)="onSubmit(reportform)">Submit</button>
+                </div>
+             </form>
+             </div>
+
+             <div *ngIf="!flag" style="padding-top:20px !important;">
+                <h2>Report Based on User Activity</h2>
+                <br/>
+                <form [formGroup]="reportform1" class="m-t-10"  autocomplete="off" novalidate>
+                  <!-- <div class="form-group">
+                    <div class="controls">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button style="padding-left: 5px; padding-right: 80px;" value="1" (change)="activityChange($event)" checked>Main Menu</mat-radio-button> &nbsp;
+                            <mat-radio-button value="2" (change)="activityChange($event)">Sub Menu</mat-radio-button>
+                          </mat-radio-group> 
+                    </div>
+                </div> -->
+                    <div class="form-group">
+                        <div class="controls">
+                            <mat-form-field style="width: 400px;">
+                                <mat-label>Select Activity</mat-label>
+                                
+                                  <!-- <span *ngIf="check=='main'">
+                                    <mat-select formControlName="activity">
+                                    <mat-option *ngFor="let a of act" [value]="a">
+                                      {{a}}
+                                    </mat-option>
+                                    </mat-select>
+                                  
+                                </span> -->
+                                
+                                  <!-- <span *ngIf="check=='sub'"> -->
+                                    <mat-select formControlName="activity">
+                                  <!-- <mat-optgroup *ngFor="let menu of multiSelect | keyvalue" label="{{menu.key}}">
+                                    <mat-option *ngFor="let subMenu of menu.value" [value]="subMenu">
+                                      {{subMenu}}
+                                    </mat-option>
+                                  </mat-optgroup> -->
+                                  <mat-optgroup *ngFor="let menu of multiSelect | keyvalue" label="{{menu.key}}">
+                                    <mat-option *ngFor="let subMenu of menu.value | keyvalue" [value]="subMenu.value">
+                                    {{subMenu.key}}
+                                    </mat-option>
+                                    </mat-optgroup>
+                                 </mat-select>
+                                <!-- </span> -->
+                              </mat-form-field>
+                        </div>
+                      
+                        <div *ngIf="reportform1.controls['activity'].invalid && (reportform1.controls['activity'].dirty || reportform1.controls['activity'].touched)" >
+                            <div *ngIf="reportform1.controls['activity'].errors.required" style="color: red;">Activity Required*</div>
+                        </div>
+                      </div>
+                        <div>
+                            <button class="btn btn-info" [disabled]="reportform1.invalid" style="width: 400px; margin-bottom: 50px; color: white;" mat-button (click)="onSubmit(reportform1)">Submit</button>
+                        </div>
+                    
+                </form>
+                            
+            </div>
+            <!-- <form [formGroup]="reportform" class="m-t-10"  autocomplete="off" novalidate>
+            <div id="form" *ngIf="flag=='true'"style="padding: 20px 0px 0px 20px;">
+                <h2>Report Based on User Details</h2>
+                <br/>
+                <div class="flexRow">
+                <mat-radio-group aria-label="Select an option">
+                    <mat-radio-button style="padding-left: 5px; padding-right: 80px;" value="1" (change)="userChange($event)" checked>User Name</mat-radio-button> &nbsp;
+                    <mat-radio-button value="2" (change)="userChange($event)">User ID</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                 <div class="flexRow">
+                <mat-form-field style="width: 400px;" appearance="outline">
+                    <mat-label >{{user}}</mat-label>
+                    <input  matInput class="form-control" formControlName="user" placeholder="Enter {{user}}">
+                 </mat-form-field>
+                </div>
+                <div>
+                    <button class="btn btn-info" style="width: 400px; margin-bottom: 50px;" mat-button (click)="onSubmit(reportform)">Submit</button>
+
+                </div>
+              
+             </div>
+             <div *ngIf="flag=='false'" style="padding:20px 0px 0px 20px;">
+                 <h2>Report Based on User Activity</h2>
+                 <br/>
+                 <div class="flexRow">
+                <mat-form-field style="width: 400px;">
+                    <mat-label>Select Activity</mat-label>
+                    <mat-select formControlName="activity">
+                      <mat-option *ngFor="let a of activity" [value]="a.value">
+                        {{a.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                  <div class="flexRow">
+                    <button class="btn btn-info" style="width: 400px; margin-bottom: 50px;" mat-button (click)="onSubmit(reportform)">Submit</button>
+
+                </div>
+             </div>
+             </form> -->
+
+            </div>
+              
+            
+             <div *ngIf="showTable=='true'">
+                <div class="flexRow">
+                    <div class="flex-50">
+                      <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                         <div *ngIf="dataSource.length > 0" class="btn-group" role="group" aria-label="First group">
+                             <!-- <button type="button" class="btn blue lighten-2 btn-info" style="border: none !important;" id="pdf" (click)="download($event)">PDF</button> -->
+                             <button type="button" class="btn light-blue lighten-2 btn-info" style="border: none !important;" id="excel"(click)="download($event)">EXCEL</button>
+                             <!-- <button type="button" class="btn cyan lighten-2 btn-info" style="border: none !important;" id="csv" (click)="download($event)">CSV</button> -->
+                         </div>
+                     </div>
+                   </div>
+                   <div class="flex-50">
+                     <aio-search-box class="search-container"><input aria-label="search" placeholder="Search" type="search" [(ngModel)]="searchText"></aio-search-box>
+                   </div>
+                 </div>
+                
+               
+                <div class="example-container data-center mat-elevation-z8 m-t-50" #TABLE>
+                  <table mat-table #mytable [dataSource]="dataSource  |  slice: lowValue : highValue | filter:searchText " id="reporttable"  (matSortChange)="sortData($event)" matSort>
+                    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                      <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mattable hide-arrow">
+                        <span *ngIf="column === 'SNo'">S.NO</span>
+                        <span *ngIf="column !== 'SNo'">{{column}}</span> 
+                        </th>
+                      <td mat-cell  *matCellDef="let row"> 
+                        <span *ngIf="column ==='ACTIONDATE'">{{row[column]| date :  "dd-MM-yyyy"}}  </span>
+                        <span *ngIf="column!=='ACTIONDATE'">{{row[column]}}</span>
+                      </td>
+                     
+                    </ng-container>
+                    <ng-container matColumnDef="noData">
+                      <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                        <span class="headingFont"> No Records Found </span> 
+                      </mat-footer-cell>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="loading">
+                      <mat-footer-cell *matFooterCellDef [attr.colspan]="5">
+                        Loading, please wait...
+                      </mat-footer-cell>
+                    </ng-container>
+
+                    <tr mat-header-row [hidden]="dataSource.length === 0" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row [hidden]="dataSource.length === 0" *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <mat-footer-row *matFooterRowDef="['noData']" [hidden]="tableLoading || (dataSource && dataSource.length > 0)" ></mat-footer-row> 
+                    <mat-footer-row *matFooterRowDef="['loading']" [hidden]="!tableLoading"></mat-footer-row>
+                  </table>
+                </div> 
+                <!-- | filter:searchText -->
+                <div *ngIf="checkLoading==0" class="flexRow">
+                <div class="button-box flex-50 flex-btn">
+                  <button class="btn btn-info" (click)=onBack()>Back</button>
+               </div>
+               <div class="flex-50 flex-btn" >
+                  <span *ngIf="dataSource.length > 0">
+                    <mat-paginator [length]="dataSource.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"  (page)="getPaginatorData($event)">
+                    </mat-paginator>
+                 </span>
+               
+               </div> 
+            </div>
+              
+                <!-- <div class="col-lg-12 col-md-12 ">
+                  
+                
+                      <pagination-controls class="float-right" (pageChange)="pageChanged($event)"></pagination-controls> 
+                
+              </div> -->
+
+             </div>
+
+
+             
+
+
+
+          </div>
+        </div>
+       </div>
+    </div>
+
+
+   
+
+  <!-- </div>
+</div> -->
+
+
+      
+    
+

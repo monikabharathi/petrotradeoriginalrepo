@@ -1,0 +1,115 @@
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">Add New Safety Days</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12 align-self-center">
+                            <form name="form" (ngSubmit)="f.form.valid && validatesafety(form)" #f="ngForm"
+                                autocomplete="off">
+
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Depot Name </strong> <span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <select id="depotname" placeholder="select depotname" name="depotname"
+                                                    [(ngModel)]="safety.depotname" #depotname="ngModel"
+                                                    (input)="getproductlistfordepot($event.target.value)"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }"
+                                                    required class="form-control">
+                                                    <option value="undefined" disabled selected>Select Depot Name</option>
+                                                    <option value="{{c.DEPOT_ID}}" *ngFor="let c of depotlist">
+                                                        {{c.DEPOT_NAME}}</option>
+                                                </select>
+                                                <div *ngIf="f.submitted && depotname.invalid" class="invalid-feedback">
+                                                    <div *ngIf="depotname.errors.required">Depot Name Is Required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Product Name </strong> <span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                                <select id="productname" placeholder="select productname"
+                                                    name="productname" [(ngModel)]="safety.productname"
+                                                    #productname="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && productname.invalid }"
+                                                    required class="form-control">
+                                                    <option value="undefined" disabled selected>Select Product Name</option>
+                                                    <option value="{{c.PRODUCT_ID}}" *ngFor="let c of productlist">
+                                                        {{c.PRODUCT_NAME}}</option>
+
+                                                </select>
+                                                <div *ngIf="f.submitted && productname.invalid"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="productname.errors.required">product Name Is Required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong> Date</strong><span class="text-danger">*</span></h6>
+                                            <div class="controls">
+                                              <input type="text" placeholder="Select the Date" class="form-control"
+                                                    name="safetyDateValue" [(ngModel)]="safety.safetyDateValue"
+                                                    #safetyDateValue="ngModel" [minDate]="minDate"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && safetyDateValue.invalid }"
+                                                    required bsDatepicker   [bsConfig]="{ dateInputFormat:'DD-MM-YYYY' }" >
+                                                <div *ngIf="f.submitted && safetyDateValue.invalid"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="safetyDateValue.errors.required">Safety Date Is Required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h6><strong>Stock Safety Days </strong><span class="text-danger">*</span>
+                                            </h6>
+                                            <div class="controls">
+                                                <input type="text" placeholder="Safety Days" class="form-control"
+                                                    name="safetydays" [(ngModel)]="safety.safetydays"
+                                                    #safetydays="ngModel"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && safetydays.invalid }"
+                                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46"
+                                                    required />
+                                                <div *ngIf="f.submitted && safetydays.invalid" class="invalid-feedback">
+                                                    <div *ngIf="safetydays.errors.required">Safety Days Is Required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                {{msg}}
+                                <div class="button-box text-center">
+                                    <button class="btn btn-danger" [routerLink]="'../safety'" [hidden]="mysubmit" >Cancel</button>
+                                    <button class="btn btn-info" type="submit" [hidden]="mysubmit">Submit</button>
+                                  
+                                  
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        

@@ -1,0 +1,10 @@
+[0808/121119.937:ERROR:crash_report_database_win.cc(428)] unexpected header
+[1024/220807.744:ERROR:crash_report_database_win.cc(428)] unexpected header
+[1025/112414.224:ERROR:crash_report_database_win.cc(428)] unexpected header
+[1025/115318.684:ERROR:crash_report_database_win.cc(428)] unexpected header
+[1025/120923.338:ERROR:crash_report_database_win.cc(428)] unexpected header
+[1026/115117.109:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0418/085309.474:ERROR:file_io.cc(89)] ReadExactly: expected 152, observed 120
+[0504/094813.101:ERROR:file_io.cc(89)] ReadExactly: expected 152, observed 0
+[0529/210912.571:ERROR:process_reader_win.cc(127)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[0529/210912.602:ERROR:exception_snapshot_win.cc(99)] thread ID 8628 not found in process

@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">View Product</h4>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <!--   <table class="table color-table info-table"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="bg-info m-b-0 text-white">
+
+                                <th>PRODUCT NAME</th>
+                                <th>PRODUCT ID</th>
+                                <th>DEPOT NAME</th>
+                                <th>PRODUCT DESCRIPTION</th>
+                                <th>UNITS</th>
+                             <!--    <th>STATUS</th> -->
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of productlist">
+                                <td> <strong>{{product.PRODUCT_NAME}}</strong></td>
+                                <td><strong>{{product.PRODUCT_ID}}</strong></td>
+                                <td><strong>{{product.DEPOT_NAME}}</strong></td>
+                                <td><strong>{{product.PRODUCT_DESCRIPTION}}</strong></td>
+                                <td><strong>{{product.unit_name}}</strong></td>
+                              <!--   <td><strong>{{product.REMARKS}}</strong></td> -->
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="button-box text-center">
+
+                        <button class="btn btn-inverse" [routerLink]="'../product'">Back</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

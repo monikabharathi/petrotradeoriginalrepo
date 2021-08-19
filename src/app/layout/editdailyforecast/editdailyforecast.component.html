@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4 class="m-b-0 text-white">Edit Forecast D</h4>
+      </div>
+      <div class="card-body">
+        <div class="col-md-12 align-self-center">
+          <form name="form" (ngSubmit)="f.form.valid && validateDailyForecast(form)" #f="ngForm" autocomplete="off">
+            <div class="form-row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <h6><strong>Depot Name</strong> <span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="depotname" [(ngModel)]="dailyforecast.depotname" readonly="true"
+                      class="form-control"> </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <h6><strong>Product Name</strong><span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="productname" readonly="true" [(ngModel)]="dailyforecast.productname"
+                      class="form-control"> </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="card">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>FORECAST VERSION</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>DATE</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white"><strong>MONTH</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>DAY</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white"><strong>WEEKNUM</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white"><strong>VALUE</strong></h6>
+                  </div>
+
+                </div>
+
+                <div class="row" *ngFor="let p of forecastlist;let i = index">
+                  <div class="col  bg-light border p-2 text-center">
+                    <input type="text" readonly="true" [name]='p.FORECAST_VERSION' size='10' class="form-control"
+                      [(ngModel)]="p.FORECAST_VERSION">
+                  </div>
+                  <div class="col  bg-light border p-2 text-center">
+                    <input type="date" readonly="true" [name]='p.FORECAST_DATE' size='10' class="form-control"
+                      [(ngModel)]="p.FORECAST_DATE">
+                  </div>
+                  <div class="col  bg-light border p-2 text-center">
+                    <input type="text" readonly="true" [name]='p.MONTHOFYEAR' size='10' class="form-control"
+                      [(ngModel)]="p.MONTHOFYEAR">
+                  </div>
+                  <div class="col  bg-light border p-2 text-center">
+                    <input type="text" readonly="true" [name]='p.DAYOFWEEK' size='10' class="form-control"
+                      [(ngModel)]="p.DAYOFWEEK">
+                  </div>
+                  <div class="col  bg-light border p-2 text-center">
+                    <input type="text" readonly="true" [name]='p.WEEK_NUM' size='10' class="form-control"
+                      [(ngModel)]="p.WEEK_NUM">
+                  </div>
+
+                  <!-- [disabled]="p.FORECAST_DATE<=p.Stockdate" -->
+                  <div class="col  bg-light border p-2 ">
+                    <input type="text"   [(ngModel)]="p.FORECAST_QUANTITY" [name]='p.FORECAST_QUANTITY' size='10'
+                      class="form-control" [ngModelOptions]="{standalone: true}"
+                      onkeypress="return event.charCode >= 48 && event.charCode <= 57|| event.charCode ==46" />
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="button-box text-center">
+              <button class="btn btn-danger" [routerLink]="'../dailyforecast'" [hidden]="mysubmit">Cancel</button>
+              <button class="btn btn-info" type="submit" [hidden]="mysubmit">Submit</button>
+              <span  style="color: red;">{{msg}}</span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>

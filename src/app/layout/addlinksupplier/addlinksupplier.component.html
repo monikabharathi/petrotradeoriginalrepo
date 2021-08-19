@@ -1,0 +1,117 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h4 class="m-b-0 text-white">Link New Supplier</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12 align-self-center">
+                    <form name="form" (ngSubmit)="f.form.valid && validatelinkSupplier(form)" #f="ngForm"
+                        autocomplete="off">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Supplier Name </strong> <span class="text-danger">*</span></h6>
+                                    <div class="controls">
+                                        <select id="suppliername" placeholder="select suppliername" name="suppliername"
+                                            [(ngModel)]="model.suppliername" #suppliername="ngModel"
+                                            (change)="changesuppplier()"
+                                            [ngClass]="{ 'is-invalid': f.submitted && suppliername.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" selected disabled>Select Supplier Name</option>
+                                            <option value="{{c.SUPPLIER_ID}}" *ngFor="let c of supplierlist">
+                                                {{c.SUPPLIER_NAME}}</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && suppliername.invalid" class="invalid-feedback">
+                                            <div *ngIf="suppliername.errors.required">SupplierName Is Required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <h6><strong>Depot Name </strong> <span class="text-danger">*</span></h6>
+
+                                    <div class="controls">
+                                        <select id="depotname" placeholder="select depotname" name="depotname"
+                                            [(ngModel)]="model.depotname"
+                                            (change)="getproductlistfordepot($event.target.value)" #depotname="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }" required
+                                            class="form-control">
+                                            <option value="undefined" disabled selected>Select Depot Name</option>
+                                            <option value="{{c.DEPOT_ID}}" *ngFor="let c of depotlist">
+                                                {{c.DEPOT_NAME}}</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && depotname.invalid" class="invalid-feedback">
+                                            <div *ngIf="depotname.errors.required">DepotName Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title"><strong>Add Lead Time</strong> </h4>
+                                <div class="row">
+                                 <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Select Product</strong></h6>
+                                    </div>
+
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Product Name</strong></h6>
+                                    </div>
+                                    <div class="col bg-info border p-2 text-center">
+                                        <h6 class=" text-white"><strong>Lead Time</strong></h6>
+                                    </div>
+
+                                </div>
+
+                                <div class="row" *ngFor="let p of productlist;let i = index">
+
+                                     <div class="col  bg-light border p-2 ">
+
+                                    <input type="checkbox" class="sub-menu"  [checked]="p.checkboxstatus===true"  
+                                     (change)="changeCheckBox(p,p.checkboxstatus,p.PRODUCT_ID)"
+                                     [(ngModel)]="p.checkboxstatus" [name]="p.PRODUCT_ID"
+                                       > 
+
+                                    </div> 
+                                    <div class="col  bg-light border p-2 ">
+                                        <input type="text" readonly="true" class="form-control" [name]='p.PRODUCT_NAME'
+                                            size='5' [(ngModel)]="p.PRODUCT_NAME">
+                                    </div>
+                                    <div class="col  bg-light border p-2 "  >
+                                        <select id="leadtime" placeholder="select Lead Time" 
+                                            [(ngModel)]="p.leadtime" #leadtime="ngModel"   [name]="p.PRODUCT_ID"
+                                            [ngClass]="{ 'is-invalid': f.submitted && leadtime.invalid }" [required]="p.checkboxstatus===true"
+                                            class="form-control">
+                                            <option value="undefined" selected disabled>Select Lead Time</option>
+                                            <option value="1" [disabled]="p.isDisabled">1</option>
+                                            <option value="2" [disabled]="p.isDisabled">2</option>
+                                            <option value="3" [disabled]="p.isDisabled">3</option>
+                                            <option value="4" [disabled]="p.isDisabled">4</option>
+                                            <option value="5" [disabled]="p.isDisabled">5</option>
+                                            <option value="6" [disabled]="p.isDisabled">6</option>
+                                            <option value="7" [disabled]="p.isDisabled">7</option>
+                                        </select>
+                                        <div *ngIf="f.submitted && leadtime.invalid" class="invalid-feedback">
+                                            <div *ngIf="leadtime.errors.required">Lead Time Is Required</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-box text-center">
+                            <button class="btn btn-danger" [routerLink]="'../supplier'">Cancel</button>
+                            <button class="btn btn-info" type="submit" [hidden]="ishide">Submit</button>
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>

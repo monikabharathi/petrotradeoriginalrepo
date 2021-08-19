@@ -1,0 +1,60 @@
+option[value=""][disabled] {
+    display: none;
+    }
+    
+button:disabled{
+    cursor:not-allowed;
+}
+.example-container {
+    height: 400px;
+    overflow: auto;
+  }
+  table {
+    width: 100%;
+  }
+
+  
+ .mattable{
+  
+  font-size: 15px;
+  color: white;
+  background-color: #398BF7;
+  min-height: 70px;
+  border-right: 1px solid;
+ }
+ .center{
+   text-align: center;
+ }
+ .mat-footer-row{
+    border: none;
+  }
+  
+  .mat-footer-cell{
+    display: flex;
+    justify-content: center;
+  }
+  .mat-cell{
+    text-align: center;
+    }
+   .forecast-tabel table{
+        min-width: 1012px;
+       }
+   .flex{
+        display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 20px 0px 10px 0px;
+      }    
+    .submit{
+      padding: 23px 10px;
+    }
+    
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0px 10px 0px;
+}
+.center-center{
+  justify-content: center;
+}

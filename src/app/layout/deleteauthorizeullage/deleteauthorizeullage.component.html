@@ -1,0 +1,86 @@
+
+        <div class="loading" *ngIf="loading">
+            <div class="card">
+                <div class="card-body">
+                    <ngx-spinner
+                        bdColor="rgba(51,51,51,0.8)"
+                        size="medium"
+                        color="#fff"
+                        type="ball-scale-multiple"
+                        >
+                        <p style="font-size: 20px; color: white">Loading...</p>
+                    </ngx-spinner>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!loading">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 text-white">Delete Authorize Tank List</h4>
+                    </div>
+                    <div class="card-body">
+<!-- search the records -->
+<div class="col-lg-3" class="float-right">
+        <div class="input-group ">
+            <div class="input-group-prepend">
+                <div class="input-group-text" id="btnGroupAddon2"><i class="ti-search"></i></div>
+            </div>
+            <input type="text" class="form-control" placeholder="search" autocomplete="off" name="search" [(ngModel)]="filter">
+        </div>
+    </div>
+
+<!-- search the records  end -->
+                        <div class="table-responsive">
+                            <!--   <table class="table color-table info-table"> -->
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="bg-info m-b-0 text-white">
+                                        <th>Sl No</th>
+                                        <th>Depot Name</th>
+                                        <th>Product Name</th> 
+                                        <th>Tank Name</th> 
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr  *ngFor="let c of collection.data |paginate:config| filter:filter; let i = index ">
+                                        <td><strong> {{i + 1}}</strong></td>
+                                        <td> <strong>{{c.DEPOT_NAME}}</strong></td>
+                                        <td><strong>{{c.PRODUCT_NAME}}</strong></td>
+                                        <td><strong>{{c.TANK_NAME}}</strong></td>
+                                       
+                                        <a href="javascript:void(0)">
+                                            <td> <i class="mdi mdi-eye-outline" tooltip="View Deleted tank"
+                                                    (click)="viewdeleteauthorizetank(c)"></i></td>
+                                        </a>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="center">
+                                <tr *ngIf="collection.data.length===0">
+                                    <td><strong>No Records found</strong></td>
+                                </tr>
+                            </div>
+                            <div class="row">
+                                <!--   <div class="col-lg-3 col-md-12">
+                                    <input type="number" class="form-control" name="itemsPerPage"
+                                        [(ngModel)]="config.itemsPerPage">
+                                </div> -->
+                         <div class="col-lg-12 col-md-12 ">
+                                    <pagination-controls class="float-right" (pageChange)="pageChanged($event)">
+                                    </pagination-controls>
+                                </div>
+                              
+                            </div>
+                          
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    

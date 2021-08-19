@@ -1,0 +1,95 @@
+
+<div class="row">
+  <div class="col-lg-12">
+  <div class="card">
+  <div class="card-header bg-info">
+  <h4 class="m-b-0 text-white">{{reportname}} Report</h4>
+  </div>
+   <!-- <option [value]=c.DEPOT_NAME >{{c.DEPOT_NAME}}</option> -->
+  <div class="card-body">
+ 
+  <div >
+  <div class="col-lg-6 col-md-12 align-self-center">
+  
+  <form [formGroup]="reportform" class="m-t-10" autocomplete="off" novalidate>
+  <div class="form-group">
+  <h6><strong>Depot Name</strong> <span class="text-danger">*</span></h6>
+  <div class="controls" >
+  <select name="select" id="depotselect" class="form-control" formControlName="depotname"
+  (change)="getproductlistfordepot($event.target.value)" >
+  <option value="" disabled selected>Select Depot Name</option>
+  <option value="all">ALL</option>
+  <option [value]=c.DEPOT_ID *ngFor="let c of collection.data" >{{c.DEPOT_NAME}}</option>
+  </select>
+  </div>
+  <div *ngIf="reportform.controls['depotname'].invalid && (reportform.controls['depotname'].dirty || reportform.controls['depotname'].touched)" >
+  <div *ngIf="reportform.controls['depotname'].errors.required" style="color: red;">Depot Name Required*</div>
+  </div>
+  </div>
+  <div class="form-group">
+  <h6><strong>Product Name</strong> <span class="text-danger">*</span></h6>
+  <div class="controls" >
+  <select name="select" id="select" class="form-control" formControlName="productid" >
+  <option value="" disabled selected>Select Product Name</option>
+  <option value="all">All</option>
+  <option [value]=c.productid *ngFor="let c of productlist" >{{c.productname}}</option>
+  </select>
+  </div>
+  <div *ngIf="reportform.controls['productid'].invalid && (reportform.controls['productid'].dirty || reportform.controls['productid'].touched)" >
+  <div *ngIf="reportform.controls['productid'].errors.required" style="color: red;">Product Name Required*</div>
+  </div>
+  </div>
+  
+  
+  
+  
+  <div class="form-group">
+  <h6><strong>From Date</strong><span class="text-danger">*</span></h6>
+   <!-- <div class="controls" *ngIf="todateState==0">
+  <input type="text"placeholder="Select From Date" class="form-control" formControlName="fromdate" bsDatepicker value="{{ fromdate | date: 'DD-MM-YYYY' }}">
+  </div>  -->
+  <div class="controls" >
+    <div *ngIf="reportname !='Supply Plan Sale' && reportname !='Forecast Performance'">
+    <input  type="text"placeholder="Select From Date" [maxDate]="fromDateLimit" class="form-control" formControlName="fromdate"(bsValueChange)="emptyValue($event)"  bsDatepicker value="{{ fromdate | date: 'DD-MM-YYYY' }}">
+  </div>
+
+  <!-- [daysDisabled]="[0,2,3,4,5,6]" -->
+
+  <!-- [daysDisabled]="[1,2,3,4,5,6]" -->
+  <div *ngIf="reportname =='Supply Plan Sale' || reportname =='Forecast Performance'" >
+    <input type="text"placeholder="Select From Date" [maxDate]="fromDateLimit" class="form-control" formControlName="fromdate"(bsValueChange)="emptyValue($event)"   bsDatepicker value="{{ fromdate | date: 'DD-MM-YYYY' }}">
+  </div>
+  </div>
+  <div *ngIf="reportform.controls['fromdate'].invalid && (reportform.controls['fromdate'].dirty || reportform.controls['fromdate'].touched)" >
+  <div *ngIf="reportform.controls['fromdate'].errors.required" style="color: red;">From Date Required*</div>
+  </div>
+  </div>
+  
+  <div class="form-group">
+  <h6><strong>To Date</strong><span class="text-danger">*</span></h6>
+  <div class="controls">
+    <div *ngIf="reportname !='Supply Plan Sale' && reportname !='Forecast Performance'">
+    <input type="text" [minDate]="reportform.value.fromdate" placeholder="Select To Date" class="form-control" formControlName="todate"   bsDatepicker value="{{ todate | date: 'DD-MM-YYYY' }}">
+  </div>
+  <div *ngIf="reportname =='Supply Plan Sale' || reportname =='Forecast Performance'" >
+    <input type="text" [minDate]="reportform.value.fromdate" placeholder="Select To Date" class="form-control" formControlName="todate"     bsDatepicker value="{{ todate | date: 'DD-MM-YYYY' }}">
+  </div>
+  </div>
+  <div *ngIf="reportform.controls['todate'].invalid && (reportform.controls['todate'].dirty || reportform.controls['todate'].touched)" >
+  <div *ngIf="reportform.controls['todate'].errors.required" style="color: red;">To Date Required*</div>
+  </div>
+  </div>
+  
+  
+  
+  <div class="button-box text-center" >
+  <button type="button" class="btn btn-info" [disabled]="reportform.invalid" (click)="onSubmit(reportform)">Submit</button> 
+  </div>
+  </form>
+  </div>
+  </div>
+  
+  </div>
+  
+  </div>
+  </div>

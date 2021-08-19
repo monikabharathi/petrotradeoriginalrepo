@@ -1,0 +1,102 @@
+<div class="loading" *ngIf="loading">
+    <div class="card">
+        <div class="card-body">
+            <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+                <p style="font-size: 20px; color: white">Loading...</p>
+            </ngx-spinner>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!loading">
+    <div class="col-lg-12">
+        <div style="display:flex; justify-content:flex-end; width:100%; padding-bottom: 15px;">
+
+            <!--   <a [routerLink]="'../deleteauthorizedepot'"> <button type="submit" class="btn btn-info">Delete
+                    Authorize Depot</button> </a>
+            &nbsp; &nbsp; &nbsp;
+            <a [routerLink]="'../authorizedepot'"> <button type="submit" class="btn btn-info">Authorize
+                    Depot</button> </a>
+--> &nbsp; &nbsp; &nbsp;
+
+            <a [hidden]="deleteauthvisiable" [routerLink]="'../deleteauthorizeuser'"> <button type="submit"
+                    class="btn btn-info">Delete Authorize User </button> </a>
+            &nbsp; &nbsp; &nbsp;
+            <a [hidden]="authprofilevisiable" [routerLink]="'../authorizeuser'"> <button type="submit"
+                    class="btn btn-info">Authorize User </button> </a>
+            &nbsp; &nbsp; &nbsp;
+
+            <a [hidden]="addvisiable" [routerLink]="'../adduser'"> <button type="submit" class="btn btn-info">Add User
+                </button> </a>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <!-- search the records -->
+                <div class="col-lg-3" class="float-right">
+                    <div class="input-group ">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon2"><i class="ti-search"></i></div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="search" autocomplete="off" name="search"
+                            [(ngModel)]="filter">
+                    </div>
+                </div>
+
+                <!-- search the records  end -->
+                <div class="table-responsive">
+                    <!--   <table class="table color-table info-table"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="bg-info m-b-0 text-white">
+                                <th>SL NO</th>
+                                <th>USER NAME</th>
+                                <th>USER ID</th>
+                                <th> ADDED BY</th>
+                                <th> ADDED DATE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let c of collection.data | paginate:config | filter: filter; let i = index ">
+                                <td><strong> {{ (config.currentPage - 1) * config.itemsPerPage + i +1 }}</strong></td>
+                                <td> <strong>{{c.userName}}</strong></td>
+                                <td><strong>{{c.userId}}</strong></td>
+                                <td><strong>{{c.addedBy}}</strong></td>
+                                <td><strong>{{c.addedDate | date :  "dd-MM-yyyy"}}</strong></td>
+                                <a href="javascript:void(0)" [hidden]="viewvisiable">
+                                    <td> <i class="mdi mdi-eye-outline" tooltip="View User" (click)="ViewUser(c)"></i>
+                                    </td>
+                                </a>
+                                <a href="javascript:void(0)" [hidden]="editvisiable">
+                                    <td> <i class="mdi mdi-border-color" tooltip="Edit User" (click)="EditUser(c)"></i>
+                                    </td>
+                                </a>
+                                <a href="javascript:void(0)" [hidden]="deletevisiable">
+                                    <td> <i class="mdi mdi-delete" tooltip="Delete User" (click)="DeleteUser(c)"></i>
+                                    </td>
+                                </a>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <!--   <div class="center">
+                        <tr *ngIf="collection.data.length==='0'">
+                            <td><strong>No Records found</strong></td>
+                        </tr>
+                    </div> -->
+                    <div class="row">
+                        <!--   <div class="col-lg-3 col-md-12">
+                            <input type="number" class="form-control" name="itemsPerPage"
+                                [(ngModel)]="config.itemsPerPage">
+                        </div> -->
+                        <div class="col-lg-12 col-md-12 ">
+                            <pagination-controls class="float-right" (pageChange)="pageChanged($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

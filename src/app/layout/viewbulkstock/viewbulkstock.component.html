@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4 class="m-b-0 text-white">View Bulk Stock</h4>
+      </div>
+      <div class="card-body">
+        <div class="col-md-12 align-self-center">
+          <form class="m-t-10" novalidate>
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <h6><strong>Depot Name</strong> <span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="depotname" [(ngModel)]="bulkstock.depotname" readonly="true"
+                      class="form-control"> </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <h6><strong>Last Updated Date</strong><span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="loadeddate" readonly="true" [(ngModel)]="bulkstock.loadeddate"
+                      class="form-control"> </div>
+                </div>
+              </div>
+           <!--    <div class="col-md-4 mb-3">
+                <div class="form-group">
+                  <h6><strong>Week Day</strong><span class="text-danger"></span></h6>
+                  <div class="controls">
+                    <input type="text" name="weekday" readonly="true" [(ngModel)]="bulkstock.weekday"
+                      class="form-control"> </div>
+                </div>
+              </div> -->
+            </div>
+
+<!--  (input)="getproductlistfordepot($event.target.value)" [ngClass]="{ 'is-invalid': f.submitted && depotname.invalid }" -->
+
+
+            <div class="form-row">
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                  <h6><strong>Select Product Name </strong> <span class="text-danger">*</span></h6>
+                  <div class="controls">
+                      <select id="productid" placeholder="Select depotname" name="productid"
+                          [(ngModel)]="bulkstock.productid" #productid="ngModel"
+                          (input)="enableProduct($event.target.value)" 
+                          required
+                          class="form-control">
+                          <option value="undefined" disabled selected>Select Product Name</option>
+                          <option value="{{p.productid}}" *ngFor="let p of stocklistdropdown">
+                              {{p.PRODUCT_NAME}}</option>
+                      </select>
+                  </div>
+              </div>
+          </div>
+
+
+            </div>
+            <div class="card">
+              <div class="card-body"   [hidden]="prodcut">
+                <h4 class="card-title"><strong>View Bulk Stock Data</strong> </h4>
+                <div class="row">
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Product Name</strong></h6>
+                  </div>
+
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Stock Date</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Opening</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white"><strong>Purchase</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Loaded</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center ">
+                    <h6 class=" text-white"><strong>Transfer</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>GL & Adj</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>Closing</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>AddType</strong></h6>
+                  </div>
+                  <div class="col bg-info border p-2 text-center">
+                    <h6 class=" text-white"><strong>FileName</strong></h6>
+                  </div>
+
+
+                </div>
+                <div class="row" *ngFor="let p of stocklist;let i = index">
+                  <div class="col  bg-light border p-2 text-center" name='productname' *ngIf="myiputvalue ==p.productid" >  {{p.PRODUCT_NAME}}</div>
+                  <div class="col  bg-light border p-2 text-center" name='productname' *ngIf="myiputvalue ==p.productid" >{{p.STOCK_DATE}}</div>
+                    <div class="col  bg-light border p-2 text-center" name='openingbalance' *ngIf="myiputvalue ==p.productid" >{{Number(p.openingbalance)|currency:"LAK":''}}</div><!-- :'1.2-2' -->
+                  <div class="col  bg-light border p-2 text-center" name='purchase' *ngIf="myiputvalue ==p.productid" > {{Number(p.purchase)|currency:"LAK":''}} </div>
+                  <div class="col  bg-light border p-2 text-center" name='loaded' *ngIf="myiputvalue ==p.productid" > {{Number(p.loaded)|currency:"LAK":''}} </div>
+                  <div class="col  bg-light border p-2 text-center" name='transfer' *ngIf="myiputvalue ==p.productid" > {{Number(p.transfer)|currency:"LAK":''}} </div>
+                  <div class="col  bg-light border p-2 text-center" name='gl' *ngIf="myiputvalue ==p.productid" > {{Number(p.gl)|currency:"LAK":''}} </div>
+                  <div class="col  bg-light border p-2 text-center" name='closing' *ngIf="myiputvalue ==p.productid" >  {{Number(p.closing)|currency:"LAK":''}}</div>
+                  <div class="col  bg-light border p-2 text-center" name='productname' *ngIf="myiputvalue ==p.productid" >  {{p.FLAG}}</div>
+                  <div class="col  bg-light border p-2 text-center" name='productname' *ngIf="myiputvalue ==p.productid" ><pre> {{p.REMARKS}}</pre> </div>
+
+                </div>
+              </div>
+              <div class="button-box text-center">
+                <button class="btn btn-inverse" [routerLink]="'../bulkstock'">Back</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

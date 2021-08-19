@@ -1,0 +1,208 @@
+.input-group .input-group-addon {
+    background-color: #ccc; 
+    width:70px;
+    padding:5px;
+}
+
+
+
+.headcol {
+    position:absolute;
+      width:2em;
+      left:0;
+      }
+
+
+      #contentWrapper {
+        overflow-x:auto;
+        overflow-y: hidden;
+        height: 100%;
+        margin-top: -16px; 
+        position: fixed;
+    }
+    
+    #content {
+        padding-top: 16px; 
+        width: 6000px;
+    }
+
+    /* .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color:#368bf9;
+        color: white;
+        text-align: center;
+      } */
+
+  
+
+      .example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+}
+
+
+
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0px 10px 0px;
+}
+.flex-50{
+display: flex;
+flex: 50%;
+}
+
+.m8{
+  margin: 8px;
+}
+
+.center-center{
+  justify-content: center;
+}
+
+
+.m-t-50{
+  margin-top: 50px;
+}
+
+
+table {
+  width: 100%;
+}
+
+
+.mattable{
+
+font-size: 15px;
+color: white;
+background-color: #398BF7;
+min-height: 70px;
+border-right: 1px solid;
+padding-left: 10px;
+}
+
+table{
+min-width: 1012px;
+}
+
+.headingFont{
+ font-size: 32px;
+}
+
+.btn:disabled{
+ outline: none;
+ box-shadow: none;
+ cursor: not-allowed;
+ border: none;
+ background-color: rgba(0,0,0,.12);;
+}
+
+.center{
+ text-align: center;
+}
+
+.mat-footer-row{
+border: none;
+
+}
+
+.mat-footer-cell{
+display: flex;
+justify-content: center;
+}
+
+::ng-deep .hide-arrow .mat-sort-header-arrow {
+color: #fff !important;
+}
+.flex-btn{
+display: flex;
+justify-content: center;
+align-items: flex-end;
+}
+
+.mat-row, .mat-header-row {  
+  min-width: 2800px;  
+  width: 100%;  
+}  
+
+
+
+
+.example-container {
+height: 600px;
+overflow: auto;
+}
+
+.mat-cell{
+text-align: center;
+}
+
+
+
+
+
+.custom-button{
+position: absolute;
+
+
+margin-left: 350px;
+color: white;
+
+background-color: 
+
+#398BF7 !important;
+font-family: Montserrat,sans-serif !important;
+font-size: 16px !important;
+
+}
+
+.custom-buttontwo{
+position: absolute;
+right: 30px;
+margin-right: 380px;
+color: white;
+
+background-color: 
+
+#398BF7 !important;
+
+font-family: Montserrat,sans-serif !important;
+font-size: 16px !important;
+}
+.nxt{
+margin-left: 327px;
+margin-top: 10px;
+color: black !important;
+
+}
+
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.m8{
+  margin: 8px;
+ 
+}
+
+.center-center{
+  justify-content: center;
+}
+
+.flex-50{
+  display: flex;
+  flex: 50%;
+  }
+
+
+  .headingFont{
+    font-size: 32px;
+    }
